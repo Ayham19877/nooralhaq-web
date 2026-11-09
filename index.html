@@ -61,6 +61,10 @@ audio{width:100%;margin-top:10px}
 .dhikr{line-height:1.9;font-size:17px}
 .virtue{color:#bcd8c8;font-size:13px;margin-top:6px}
 .counter{margin-top:8px}
+.dedication{width:100%;max-width:420px;display:block;margin:10px auto;border:2px solid #d4af37;border-radius:14px}
+.ded-text{text-align:center;line-height:2.1;color:#ffd977;font-size:18px;margin-top:8px}
+.about-line{text-align:center;color:#e8f2ec;font-size:15px;line-height:1.9;margin-top:6px}
+.about-line b{color:#d4af37}
 </style>
 </head>
 <body>
@@ -179,6 +183,16 @@ audio{width:100%;margin-top:10px}
 <div class="note">نور الحق — نسخة الويب PWA 1.0. مواقيت، قرآن، أذكار، قبلة، راديو. تعمل أوفلاين بعد أول زيارة. مجانية وبلا إعلانات.</div>
 </div>
 </section>
+<!-- حول التطبيق -->
+<section class="tab" id="tab-about">
+<div class="card"><h2>حول التطبيق</h2>
+<img class="dedication" src="./img/dedication_ruqah.webp" alt="صدقة جارية لوجه الله تعالى — عن والدي حسن الجدوع ووالدتي ختام الربيع — أطال الله بعمرهم">
+<div class="ded-text">صدقة جارية لوجه الله تعالى<br>عن والدي حسن الجدوع ووالدتي ختام الربيع<br>أطال الله بعمرهم</div>
+<div class="about-line" style="margin-top:14px"><b>نور الحق</b><br>نسخة الويب 1.0</div>
+<div class="about-line">مجاناً وبدون إعلانات — كامل المزايا لوجه الله تعالى</div>
+<div class="about-line">جميع الحقوق محفوظة © الأيهم</div>
+</div>
+</section>
 </div>
 
 <nav><div class="in">
@@ -188,6 +202,7 @@ audio{width:100%;margin-top:10px}
 <button data-tab="qibla">القبلة</button>
 <button data-tab="radio">الراديو</button>
 <button data-tab="settings">الإعدادات</button>
+<button data-tab="about">حول التطبيق</button>
 </div></nav>
 <audio id="adhanAudio" preload="none"></audio>
 <script>
