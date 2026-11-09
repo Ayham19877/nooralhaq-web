@@ -1,5 +1,5 @@
 /* Noor Al Haq PWA — service worker v1 */
-const CACHE = "nooralhaq-web-v1";
+const CACHE = "nooralhaq-web-v2";
 const CORE = [
   "./",
   "./index.html",
@@ -8,7 +8,13 @@ const CORE = [
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
   "./img/dedication_ruqah.webp",
-  "./adhkar.json"
+  "./adhkar.json",
+  "./quran_uthmani.json",
+  "./img/dua_banner.jpg",
+  "./fonts/Tajawal-Regular.ttf",
+  "./fonts/Tajawal-Bold.ttf",
+  "./fonts/Amiri-Regular.ttf",
+  "./fonts/Amiri-Bold.ttf"
 ];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
