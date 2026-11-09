@@ -7,6 +7,7 @@ const CORE = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
+  "./img/dedication_ruqah.webp",
   "./adhkar.json"
 ];
 self.addEventListener("install", e => {
