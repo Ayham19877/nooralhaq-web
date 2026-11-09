@@ -70,10 +70,23 @@ nav button.on{color:#5C1220;font-weight:700}
 .list-item small{color:#7D5560;display:block;font-size:15px;margin-top:3px;font-weight:400}
 .ayah{font-family:"Amiri",serif;font-size:24px;line-height:2.1;text-align:justify;padding:4px 2px;color:#5C1220}
 .ayah .n{color:#E8C86A;font-size:15px}
-.compass{width:220px;height:220px;border:3px solid #E8C86A;border-radius:50%;margin:14px auto;position:relative;background:#fff}
-.needle{position:absolute;left:50%;top:50%;width:4px;height:96px;background:#E8C86A;transform-origin:50% 100%;margin-left:-2px;margin-top:-96px;border-radius:2px}
-.needle:after{content:"";position:absolute;top:-14px;left:-7px;border:9px solid transparent;border-bottom:16px solid #E8C86A}
-.center-dot{position:absolute;left:50%;top:50%;width:14px;height:14px;background:#E8C86A;border-radius:50%;margin:-7px}
+/* بوصلة القبلة — مطابقة CompassView في QiblaScreen.java: قرص أبيض، حلقة ذهبية،
+   حروف N/E/S/W تدور مع اتجاه الهاتف (-heading)، وإبرة ذهبية مثلثة تدور نحو القبلة (rel)،
+   و🕋 عند رأس الإبرة، وغطاء ذهبي بالوسط. كل شيء حي من حساس الهاتف، لا صورة ثابتة. */
+.compass{width:220px;height:220px;border:3px solid #E8C86A;border-radius:50%;margin:14px auto;position:relative;background:#fff;overflow:hidden}
+.dial{position:absolute;inset:0;transition:transform .25s linear}
+.dial span{position:absolute;font-size:22px;font-weight:700;color:#5C1220;left:50%;top:50%;margin:-11px}
+.dial .n{color:#E8C86A;transform:translate(-50%,-99px)}
+.dial .e{transform:translate(77px,-50%)}
+.dial .s{transform:translate(-50%,77px)}
+.dial .w{transform:translate(-99px,-50%)}
+
+.needle{position:absolute;left:50%;top:50%;width:0;height:0;transition:transform .25s linear}
+.needle:before{content:"";position:absolute;left:-14px;top:-92px;border:14px solid transparent;border-bottom:136px solid #E8C86A}
+.needle .kaba{position:absolute;left:-16px;top:-88px;font-size:32px;line-height:1}
+.center-dot{position:absolute;left:50%;top:50%;width:18px;height:18px;background:#E8C86A;border-radius:50%;margin:-9px;z-index:3}
+.heading-live{text-align:center;font-size:19px;color:#5C1220}
+.compass-status{text-align:center;color:#7D5560;font-size:15px;font-weight:400;margin-top:4px}
 .big{text-align:center;font-size:26px;color:#5C1220;font-weight:700}
 .station{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .station span{font-size:19px;color:#5C1220}
@@ -223,10 +236,12 @@ audio{width:100%;margin-top:10px}
 <div class="card">
 <div class="big" id="qiblaDeg">—</div>
 <div style="text-align:center;color:#7D5560;font-weight:400" id="qiblaDist">—</div>
-<div class="compass"><div class="needle" id="needle"></div><div class="center-dot"></div></div>
-<div style="text-align:center;color:#7D5560;font-size:15px;font-weight:400" id="qiblaHint">وجّه أعلى الهاتف نحو السهم الذهبي</div>
+<div class="heading-live" id="headingLive">اتجاه هاتفك الآن: —</div>
+<div class="compass"><div class="dial" id="dial"><span class="n">N</span><span class="e">E</span><span class="s">S</span><span class="w">W</span></div><div class="needle" id="needle"><span class="kaba">🕋</span></div><div class="center-dot"></div></div>
+<div class="compass-status" id="compassStatus">البوصلة تشتغل تلقائياً — حرّك الهاتف وستدور الإبرة معك</div>
+<div style="text-align:center;color:#7D5560;font-size:15px;font-weight:400" id="qiblaHint">وجّه أعلى الهاتف نحو السهم الذهبي حتى تصير 🕋 بالأعلى</div>
 <button class="btn" id="compassBtn" style="margin-top:12px">تفعيل البوصلة</button>
-<div class="note">على الآيفون: اضغط «تفعيل البوصلة» ثم اسمح بالوصول لاتجاه الجهاز. بدون الإذن تظهر الزاوية فقط من الشمال.</div>
+<div class="note">على الأندرويد تشتغل البوصلة تلقائياً عند فتح الشاشة. على الآيفون: اضغط «تفعيل البوصلة» ثم اسمح بالوصول لاتجاه الجهاز. إذا ما تحركت الإبرة، حرّك الهاتف بشكل رقم 8 لمعايرة البوصلة.</div>
 <div style="height:12px"></div>
 <button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
 </div>
@@ -236,6 +251,7 @@ audio{width:100%;margin-top:10px}
 <section class="screen" id="screen-radio">
 <div class="sec-title">📻 راديو القرآن</div>
 <div class="card">
+<input id="radioSearch" type="search" placeholder="ابحث عن قارئ...">
 <div id="radioList"></div>
 <audio id="radioAudio" controls preload="none"></audio>
 <div class="note" id="radioStatus">اختر محطة للاستماع.</div>
@@ -472,7 +488,9 @@ function renderAdhkar(ci){
   });
 }
 
-/* ===== Qibla ===== */
+/* ===== Qibla — بوصلة حية مثل QiblaScreen.java في التطبيق: حساسات الهاتف تشتغل
+   تلقائياً عند فتح الشاشة (بلا كبسة على الأندرويد)، حروف N/E/S/W تدور مع اتجاه الهاتف
+   (-heading)، والإبرة الذهبية تدور نحو القبلة (rel = qibla - heading). ===== */
 function qiblaBearing(lat,lon){
   const la1=lat*Math.PI/180,lo1=lon*Math.PI/180,la2=21.4225*Math.PI/180,lo2=39.8262*Math.PI/180,dLo=lo2-lo1;
   const y=Math.sin(dLo)*Math.cos(la2),x=Math.cos(la1)*Math.sin(la2)-Math.sin(la1)*Math.cos(la2)*Math.cos(dLo);
@@ -484,49 +502,101 @@ function qiblaDistKm(lat,lon){
   return Math.round(6371*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
 }
 let qiblaDeg=qiblaBearing(S.lat,S.lng);
+let compassOn=false, compassGotSignal=false, compassWatchdog=null;
 function updateQibla(){
   qiblaDeg=qiblaBearing(S.lat,S.lng);
   $("qiblaDeg").textContent=Math.round(qiblaDeg)+"° من الشمال";
   $("qiblaDist").textContent="المسافة إلى مكة: "+qiblaDistKm(S.lat,S.lng).toLocaleString("en")+" كم";
   $("needle").style.transform="rotate("+qiblaDeg+"deg)";
+  startCompass();
+}
+function onHeading(e){
+  let heading=null;
+  if(e.webkitCompassHeading!=null)heading=e.webkitCompassHeading;
+  else if(e.alpha!=null)heading=(360-e.alpha)%360;
+  if(heading==null)return;
+  compassGotSignal=true;
+  const rel=(qiblaDeg-heading+360)%360;
+  $("needle").style.transform="rotate("+rel+"deg)";
+  $("dial").style.transform="rotate("+(-heading)+"deg)";
+  $("headingLive").textContent="اتجاه هاتفك الآن: "+Math.round(heading)+"° — القبلة على بعد "+Math.round(rel)+"°";
+  $("compassStatus").textContent="البوصلة شغالة — الإبرة تتحرك مع هاتفك الآن";
+  $("qiblaHint").textContent="وجّه أعلى الهاتف نحو السهم الذهبي حتى تصير 🕋 بالأعلى";
+}
+function startCompass(){
+  if(compassOn)return;
+  compassOn=true;
+  window.addEventListener("deviceorientationabsolute",onHeading);
+  window.addEventListener("deviceorientation",onHeading);
+  clearTimeout(compassWatchdog);
+  compassWatchdog=setTimeout(()=>{
+    if(!compassGotSignal){
+      $("compassStatus").textContent="ما وصلت إشارة بوصلة من جهازك — حرّك الهاتف بشكل رقم 8 لمعايرة البوصلة، وتأكد أن البوصلة مفعّلة";
+    }
+  },4000);
 }
 $("compassBtn").onclick=async()=>{
-  const start=()=>{
-    window.addEventListener("deviceorientation",e=>{
-      let heading=null;
-      if(e.webkitCompassHeading!=null)heading=e.webkitCompassHeading;
-      else if(e.alpha!=null)heading=360-e.alpha;
-      if(heading!=null){
-        const rel=(qiblaDeg-heading+360)%360;
-        $("needle").style.transform="rotate("+rel+"deg)";
-        $("qiblaHint").textContent="البوصلة مفعّلة — وجّه أعلى الهاتف نحو السهم الذهبي";
-      }
-    });
-    $("qiblaHint").textContent="البوصلة مفعّلة — حرّك الهاتف ببطء حتى يستقر السهم.";
-  };
   if(typeof DeviceOrientationEvent!=="undefined"&&typeof DeviceOrientationEvent.requestPermission==="function"){
-    try{const r=await DeviceOrientationEvent.requestPermission();if(r==="granted")start();else alert("لم تسمح بالوصول للبوصلة.");}catch(e){alert("تعذر طلب إذن البوصلة.");}
-  }else start();
+    try{const r=await DeviceOrientationEvent.requestPermission();if(r==="granted"){startCompass();$("compassStatus").textContent="البوصلة مفعّلة — حرّك الهاتف ببطء حتى يستقر السهم.";}else alert("لم تسمح بالوصول للبوصلة.");}catch(e){alert("تعذر طلب إذن البوصلة.");}
+  }else{
+    startCompass();
+    $("compassStatus").textContent="البوصلة تشتغل تلقائياً — حرّك الهاتف وستدور الإبرة معك";
+  }
 };
+if(typeof DeviceOrientationEvent!=="undefined"&&typeof DeviceOrientationEvent.requestPermission!=="function"){
+  $("compassBtn").classList.add("hidden");
+}
 
-/* ===== Radio ===== */
-const STATIONS=[
-["سعد الغامدي","https://backup.qurango.net/radio/saad_alghamdi"],
-["سعود الشريم","https://backup.qurango.net/radio/saud_alshuraim"],
-["عبد الرحمن السديس","https://backup.qurango.net/radio/abdulrahman_alsudaes"],
-["عبد الباسط عبد الصمد","https://backup.qurango.net/radio/abdulbasit_abdulsamad_mojawwad"],
-["أحمد العجمي","https://backup.qurango.net/radio/ahmad_alajmy"],
-["أبو بكر الشاطري","https://backup.qurango.net/radio/shaik_abu_bakr_al_shatri"]];
+/* ===== Radio — كل محطة لها مصدران: qurango.net الأساسي و backup.qurango.net الاحتياطي.
+   متحقق منها كلها حياً 2026-11-08: backup كان يرجع HTTP 500 للشريم والسديس وعبد الباسط،
+   والأساسي شغال للكل؛ وسعد الغامدي تذبذب مرة بـ 502 على الأساسي فالاحتياطي يغطيه. ===== */
+const STATION_SLUGS=[
+["سعد الغامدي","saad_alghamdi"],
+["سعود الشريم","saud_alshuraim"],
+["عبد الرحمن السديس","abdulrahman_alsudaes"],
+["عبد الباسط عبد الصمد","abdulbasit_abdulsamad_mojawwad"],
+["أحمد العجمي","ahmad_alajmy"],
+["أبو بكر الشاطري","shaik_abu_bakr_al_shatri"],
+["مشاري العفاسي","mishary_alafasi"],
+["محمد صديق المنشاوي","mohammed_siddiq_alminshawi"],
+["محمود خليل الحصري","mahmoud_khalil_alhussary"],
+["ماهر المعيقلي","maher"],
+["ياسر الدوسري","yasser_aldosari"],
+["فارس عباد","fares_abbad"],
+["عبد الله بصفر","abdullah_basfer"],
+["محمد أيوب","mohammed_ayyub"]];
+const STATIONS=STATION_SLUGS.map(s=>[s[0],["https://qurango.net/radio/"+s[1],"https://backup.qurango.net/radio/"+s[1]]]);
 const radioAudio=$("radioAudio");
-$("radioList").innerHTML=STATIONS.map((s,i)=>'<div class="card station"><span>'+s[0]+'</span><button class="btn small" data-i="'+i+'">تشغيل</button></div>').join("");
-$("radioList").querySelectorAll("button").forEach(b=>b.onclick=()=>{
-  const i=+b.dataset.i;
-  if(radioAudio.src===STATIONS[i][1]&&!radioAudio.paused){radioAudio.pause();b.textContent="تشغيل";$("radioStatus").textContent="متوقف.";return;}
-  radioAudio.src=STATIONS[i][1];radioAudio.play().catch(()=>{$("radioStatus").textContent="تعذر تشغيل المحطة — تحقق من الاتصال.";});
-  $("radioList").querySelectorAll("button").forEach(x=>x.textContent="تشغيل");
-  b.textContent="إيقاف";$("radioStatus").textContent="يُشغَّل الآن: "+STATIONS[i][0];
-});
-radioAudio.onerror=()=>{$("radioStatus").textContent="تعذر تشغيل المحطة — تحقق من الاتصال.";};
+let curStation=-1, curUrlIdx=0;
+function renderRadio(q){
+  const list=STATIONS.map((s,i)=>[s,i]).filter(x=>!q||x[0][0].includes(q));
+  $("radioList").innerHTML=list.map(x=>'<div class="card station"><span>'+x[0][0]+'</span><button class="btn small" data-i="'+x[1]+'">'+(x[1]===curStation&&!radioAudio.paused?"إيقاف":"تشغيل")+'</button></div>').join("")||'<div class="note">لا توجد نتائج.</div>';
+  $("radioList").querySelectorAll("button").forEach(b=>b.onclick=()=>toggleStation(+b.dataset.i));
+}
+function toggleStation(i){
+  if(i===curStation&&!radioAudio.paused){radioAudio.pause();renderRadio($("radioSearch").value.trim());$("radioStatus").textContent="متوقف.";return;}
+  curStation=i;curUrlIdx=0;
+  playCurrentUrl();
+}
+function playCurrentUrl(){
+  const s=STATIONS[curStation];
+  radioAudio.src=s[1][curUrlIdx];
+  radioAudio.play().then(()=>{
+    renderRadio($("radioSearch").value.trim());
+    $("radioStatus").textContent="يُشغَّل الآن: "+s[0];
+  }).catch(()=>{
+    if(curUrlIdx===0){curUrlIdx=1;$("radioStatus").textContent="المصدر الأساسي تعطل — أجرب المصدر الاحتياطي لـ "+s[0]+"...";playCurrentUrl();}
+    else{$("radioStatus").textContent="تعذر تشغيل "+s[0]+" من المصدرين — تحقق من الاتصال وحاول لاحقاً.";}
+  });
+}
+radioAudio.onplay=()=>{renderRadio($("radioSearch").value.trim());};
+radioAudio.onerror=()=>{
+  if(curStation<0)return;
+  if(curUrlIdx===0){curUrlIdx=1;$("radioStatus").textContent="المصدر الأساسي تعطل — أجرب المصدر الاحتياطي...";playCurrentUrl();}
+  else{$("radioStatus").textContent="تعذر تشغيل "+STATIONS[curStation][0]+" من المصدرين — تحقق من الاتصال وحاول لاحقاً.";}
+};
+$("radioSearch").oninput=e=>renderRadio(e.target.value.trim());
+renderRadio("");
 
 /* ===== Notifications / Push-ready ===== */
 $("notifBtn").onclick=async()=>{
