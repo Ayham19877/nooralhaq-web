@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b3d2e">
+<meta name="theme-color" content="#5C1220">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,78 +13,125 @@
 <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 <title>نور الحق</title>
 <style>
+/* ===== نور الحق — نفس ستايل تطبيق الأندرويد بالضبط (الثيم الافتراضي: عنابي ذهبي) =====
+   Theme.java st_burgundy: bg #5C1220, topBar #4A0E1A, card #FFFFFF, cardText #5C1220,
+   cardDim #7D5560, text #FFFFFF, dim #E8D0D4, accent #E8C86A, accentText #5C1220,
+   navBg #FFFFFF, navText #7D5560, navOn #5C1220. Ui.card: radius 16dp, padding 14dp,
+   margin-bottom 10dp. Ui.btn: accent pill radius 24dp. FONT_SCALE 1.18 — كل المقاسات هنا
+   هي مقاسات التطبيق × 1.18. الخطوط من أصول التطبيق نفسه: Tajawal للواجهة، Amiri للقرآن. */
+@font-face{font-family:"Tajawal";src:url("./fonts/Tajawal-Regular.ttf");font-weight:400}
+@font-face{font-family:"Tajawal";src:url("./fonts/Tajawal-Bold.ttf");font-weight:700}
+@font-face{font-family:"Amiri";src:url("./fonts/Amiri-Regular.ttf");font-weight:400}
+@font-face{font-family:"Amiri";src:url("./fonts/Amiri-Bold.ttf");font-weight:700}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:#06231a;color:#fff;min-height:100vh}
-.wrap{max-width:520px;margin:0 auto;padding:12px 14px 86px}
-header{text-align:center;padding:10px 0 4px}
-header .logo{width:72px;height:72px;border-radius:18px;border:2px solid #d4af37}
-h1{color:#d4af37;font-size:26px;margin:6px 0 2px}
-.sub{color:#bcd8c8;font-size:13px}
-.card{background:#0f3d2c;border:1px solid #1e5c44;border-radius:14px;padding:14px;margin-top:12px}
-.card h2{color:#d4af37;font-size:18px;margin-bottom:10px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1px solid #1a4d38}
-.row:last-child{border-bottom:0}
-.row .nm{font-size:16px}
-.row .tm{font-size:16px;color:#ffd977;font-weight:700}
-.row.next{background:#143f2c;border-radius:10px}
-.next-tag{color:#d4af37;font-size:12px}
-.countdown{text-align:center;font-size:15px;color:#bcd8c8;margin-top:10px}
-.countdown b{color:#ffd977;font-size:20px}
+body{font-family:"Tajawal",-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:#5C1220;color:#fff;min-height:100vh;font-weight:700}
+.wrap{max-width:520px;margin:0 auto;padding:0 0 86px}
+/* الشريط العلوي — HomeScreen: topBar #4A0E1A, padding 20/16, العنوان 24sp ذهبي، التاريخ 13sp باهت */
+header.topbar{background:#4A0E1A;text-align:center;padding:20px 16px 16px}
+header.topbar h1{color:#E8C86A;font-size:28px}
+header.topbar .sub{color:#E8D0D4;font-size:15px;line-height:1.7;font-weight:400}
+.body-pad{padding:16px 16px 0}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;color:#5C1220}
+.card h2{color:#5C1220;font-size:21px;margin-bottom:10px}
+.next-name{text-align:center;font-size:21px;color:#5C1220}
+.next-cd{text-align:center;font-size:19px;color:#E8C86A;font-family:ui-monospace,Menlo,Consolas,monospace;margin-top:4px}
+/* شبكة الرئيسية 3×3 — HomeScreen: خلية بيضاء 74dp، أيقونة 26sp، تسمية 11sp عنابية */
+.grid-row{display:flex}
+.cell{flex:1;background:#fff;border-radius:16px;height:74px;margin:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:0;cursor:pointer;font-family:inherit}
+.cell .ic{font-size:31px;line-height:1.25}
+.cell .lb{font-size:13px;color:#5C1220;font-weight:700}
+.banner-img{width:calc(100% - 8px);border-radius:20px;display:block;margin:8px 4px 4px}
+/* صفوف مواقيت الصلاة — PrayersScreen: بطاقة بيضاء، الاسم عنابي عريض، الوقت باهت */
+.prow{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.prow .nm{font-size:19px;color:#5C1220}
+.prow .tm{font-size:18px;color:#7D5560}
+.prow .dot{color:#E8C86A}
 button{font-family:inherit;cursor:pointer}
-.btn{background:#d4af37;color:#3a2c00;border:0;border-radius:10px;padding:11px 16px;font-size:16px;font-weight:700;width:100%}
-.btn.ghost{background:transparent;color:#d4af37;border:1px solid #d4af37}
+.btn{background:#E8C86A;color:#5C1220;border:0;border-radius:24px;padding:8px 12px;font-size:15px;font-weight:700;width:100%}
+.btn.ghost{background:transparent;color:#5C1220;border:1px solid #7D5560}
 .btn.small{width:auto;padding:7px 12px;font-size:14px}
-input,select{font-family:inherit;width:100%;background:#0a2e22;color:#fff;border:1px solid #2a6b4e;border-radius:9px;padding:10px;font-size:16px;margin:4px 0 10px}
-label{font-size:14px;color:#bcd8c8}
-.note{font-size:13px;color:#cfe3d4;line-height:1.8;background:#0a2e22;border:1px solid #2a6b4e;border-radius:10px;padding:10px;margin-top:12px}
-.note b{color:#ffd977}
+input,select{font-family:inherit;width:100%;background:#fff;color:#5C1220;border:1px solid #7D5560;border-radius:9px;padding:10px;font-size:16px;margin:4px 0 10px;font-weight:400}
+label{font-size:15px;color:#5C1220}
+.note{font-size:15px;color:#7D5560;line-height:1.8;background:#F7F1E6;border-radius:12px;padding:10px;margin-top:12px;font-weight:400}
+.note b{color:#5C1220}
 .hidden{display:none!important}
 .tab{display:none}
 .tab.active{display:block}
-nav{position:fixed;bottom:0;right:0;left:0;background:#082b1f;border-top:1px solid #1e5c44;padding:6px 4px calc(6px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:10}
+.screen{display:none}
+.screen.active{display:block}
+/* شريط التنقل السفلي — MainActivity: خلفية بيضاء، أيقونة 22sp، تسمية 11sp، النشط عنابي عريض */
+nav{position:fixed;bottom:0;right:0;left:0;background:#fff;padding:8px 4px calc(12px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:10}
 nav .in{max-width:520px;width:100%;display:flex}
-nav button{flex:1;background:none;border:0;color:#9dbfae;font-size:12px;padding:8px 2px;border-radius:8px}
-nav button.on{color:#ffd977;background:#123f31;font-weight:700}
-.list-item{background:#0f3d2c;border:1px solid #1e5c44;border-radius:10px;padding:12px;margin-top:8px;text-align:right;width:100%;color:#fff;font-size:16px}
-.list-item small{color:#bcd8c8;display:block;font-size:13px;margin-top:3px}
-.ayah{font-size:20px;line-height:2.1;text-align:justify;padding:4px 2px}
-.ayah .n{color:#d4af37;font-size:13px}
-.compass{width:220px;height:220px;border:3px solid #d4af37;border-radius:50%;margin:14px auto;position:relative;background:#0a2e22}
-.needle{position:absolute;left:50%;top:50%;width:4px;height:96px;background:#d4af37;transform-origin:50% 100%;margin-left:-2px;margin-top:-96px;border-radius:2px}
-.needle:after{content:"";position:absolute;top:-14px;left:-7px;border:9px solid transparent;border-bottom:16px solid #ffd977}
-.center-dot{position:absolute;left:50%;top:50%;width:14px;height:14px;background:#ffd977;border-radius:50%;margin:-7px}
-.big{text-align:center;font-size:26px;color:#ffd977;font-weight:700}
+nav button{flex:1;background:none;border:0;color:#7D5560;font-size:13px;padding:2px;border-radius:8px}
+nav button .nic{display:block;font-size:26px;line-height:1.3}
+nav button.on{color:#5C1220;font-weight:700}
+.list-item{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;text-align:right;width:100%;color:#5C1220;font-size:19px;border:0;font-family:inherit}
+.list-item small{color:#7D5560;display:block;font-size:15px;margin-top:3px;font-weight:400}
+.ayah{font-family:"Amiri",serif;font-size:24px;line-height:2.1;text-align:justify;padding:4px 2px;color:#5C1220}
+.ayah .n{color:#E8C86A;font-size:15px}
+.compass{width:220px;height:220px;border:3px solid #E8C86A;border-radius:50%;margin:14px auto;position:relative;background:#fff}
+.needle{position:absolute;left:50%;top:50%;width:4px;height:96px;background:#E8C86A;transform-origin:50% 100%;margin-left:-2px;margin-top:-96px;border-radius:2px}
+.needle:after{content:"";position:absolute;top:-14px;left:-7px;border:9px solid transparent;border-bottom:16px solid #E8C86A}
+.center-dot{position:absolute;left:50%;top:50%;width:14px;height:14px;background:#E8C86A;border-radius:50%;margin:-7px}
+.big{text-align:center;font-size:26px;color:#5C1220;font-weight:700}
 .station{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.station span{font-size:19px;color:#5C1220}
 audio{width:100%;margin-top:10px}
-.banner{background:#d4af37;color:#3a2c00;border-radius:10px;padding:12px;text-align:center;font-weight:700;margin-top:12px}
-.dhikr{line-height:1.9;font-size:17px}
-.virtue{color:#bcd8c8;font-size:13px;margin-top:6px}
+.banner{background:#E8C86A;color:#5C1220;border-radius:16px;padding:14px;text-align:center;font-weight:700;margin-bottom:10px}
+.dhikr{line-height:1.9;font-size:20px;color:#5C1220;font-family:"Amiri",serif}
+.virtue{color:#7D5560;font-size:15px;margin-top:6px;font-weight:400}
 .counter{margin-top:8px}
-.dedication{width:100%;max-width:420px;display:block;margin:10px auto;border:2px solid #d4af37;border-radius:14px}
-.ded-text{text-align:center;line-height:2.1;color:#ffd977;font-size:18px;margin-top:8px}
-.about-line{text-align:center;color:#e8f2ec;font-size:15px;line-height:1.9;margin-top:6px}
-.about-line b{color:#d4af37}
+.dedication{width:100%;max-width:420px;display:block;margin:10px auto;border:2px solid #E8C86A;border-radius:14px}
+.ded-text{text-align:center;line-height:2.1;color:#5C1220;font-size:21px;margin-top:8px}
+.about-line{text-align:center;color:#5C1220;font-size:18px;line-height:1.9;margin-top:6px}
+.about-line b{color:#5C1220}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#4A0E1A;color:#E8C86A;padding:10px 18px;border-radius:24px;font-size:15px;z-index:20;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.sec-title{color:#E8C86A;font-size:26px;text-align:center;margin:6px 0 12px}
+.sec-sub{text-align:center;color:#E8D0D4;font-size:15px;font-weight:400;margin-bottom:12px}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header>
-<img class="logo" src="./icons/icon-192.png" alt="نور الحق">
-<h1>نور الحق</h1>
+<header class="topbar">
+<h1>🕌 نور الحق</h1>
 <div class="sub" id="hijriDate">—</div>
-<div class="sub" id="locLine">Richardson, TX</div>
+<div class="sub" id="gregDate">—</div>
 </header>
+<div class="body-pad">
 
 <div id="adhanBanner" class="banner hidden"></div>
 
-<!-- الرئيسية -->
+<!-- الرئيسية — مطابقة HomeScreen.java: بطاقة الصلاة القادمة + شبكة 3×3 + بانر الدعاء -->
 <section class="tab active" id="tab-home">
 <div class="card">
-<h2>مواقيت اليوم</h2>
-<div id="timesList"></div>
-<div class="countdown" id="countdown">—</div>
+<div class="next-name" id="nextName">الصلاة القادمة: —</div>
+<div class="next-cd" id="countdown">المتبقي —</div>
 </div>
+<div id="homeGrid">
+<div class="grid-row">
+<button class="cell" data-go="quran"><span class="ic">📖</span><span class="lb">القرآن</span></button>
+<button class="cell" data-screen="qibla"><span class="ic">🧭</span><span class="lb">القبلة</span></button>
+<button class="cell" data-screen="radio"><span class="ic">📻</span><span class="lb">الراديو</span></button>
+</div>
+<div class="grid-row">
+<button class="cell" data-soon="الحديث"><span class="ic">📚</span><span class="lb">الحديث</span></button>
+<button class="cell" data-soon="التقويم الهجري"><span class="ic">📅</span><span class="lb">التقويم الهجري</span></button>
+<button class="cell" data-soon="المسبحة"><span class="ic">📿</span><span class="lb">المسبحة</span></button>
+</div>
+<div class="grid-row">
+<button class="cell" data-go="adhkar"><span class="ic">🤲</span><span class="lb">الأذكار</span></button>
+<button class="cell" data-soon="تعلم الصلاة"><span class="ic">🕌</span><span class="lb">تعلم الصلاة</span></button>
+<button class="cell" data-soon="الزكاة"><span class="ic">💰</span><span class="lb">الزكاة</span></button>
+</div>
+</div>
+<img class="banner-img" src="./img/dua_banner.jpg" alt="دعاء">
+</section>
+
+<!-- الصلاة — مطابقة PrayersScreen.java: بطاقة بيضاء لكل صلاة، الاسم عنابي والوقت باهت -->
+<section class="tab" id="tab-prayers">
+<div class="sec-title">🕌 مواقيت الصلاة</div>
+<div id="timesList"></div>
 <div class="card">
 <button class="btn" id="playAdhanBtn">اسمع الأذان</button>
 <div style="height:8px"></div>
@@ -95,7 +142,8 @@ audio{width:100%;margin-top:10px}
 
 <!-- القرآن -->
 <section class="tab" id="tab-quran">
-<div class="card"><h2>القرآن الكريم</h2>
+<div class="sec-title">📖 القرآن الكريم</div>
+<div class="card">
 <input id="surahSearch" type="search" placeholder="ابحث عن سورة...">
 <div id="surahList"><div class="note">جارٍ تحميل السور...</div></div>
 <div id="surahReader" class="hidden">
@@ -108,35 +156,16 @@ audio{width:100%;margin-top:10px}
 
 <!-- الأذكار -->
 <section class="tab" id="tab-adhkar">
-<div class="card"><h2>الأذكار والأدعية</h2>
+<div class="sec-title">🤲 الأذكار والأدعية</div>
+<div class="card">
 <div id="adhkarCats"></div>
 <div id="adhkarList"><div class="note">جارٍ تحميل الأذكار...</div></div>
 </div>
 </section>
 
-<!-- القبلة -->
-<section class="tab" id="tab-qibla">
-<div class="card"><h2>اتجاه القبلة</h2>
-<div class="big" id="qiblaDeg">—</div>
-<div style="text-align:center;color:#bcd8c8" id="qiblaDist">—</div>
-<div class="compass"><div class="needle" id="needle"></div><div class="center-dot"></div></div>
-<div style="text-align:center;color:#bcd8c8;font-size:14px" id="qiblaHint">وجّه أعلى الهاتف نحو السهم الذهبي</div>
-<button class="btn" id="compassBtn" style="margin-top:12px">تفعيل البوصلة</button>
-<div class="note">على الآيفون: اضغط «تفعيل البوصلة» ثم اسمح بالوصول لاتجاه الجهاز. بدون الإذن تظهر الزاوية فقط من الشمال.</div>
-</div>
-</section>
-
-<!-- الراديو -->
-<section class="tab" id="tab-radio">
-<div class="card"><h2>راديو القرآن</h2>
-<div id="radioList"></div>
-<audio id="radioAudio" controls preload="none"></audio>
-<div class="note" id="radioStatus">اختر محطة للاستماع.</div>
-</div>
-</section>
-
-<!-- الإعدادات -->
-<section class="tab" id="tab-settings">
+<!-- المزيد — مطابقة MoreScreen.java: الإعدادات + حول التطبيق + الإهداء -->
+<section class="tab" id="tab-more">
+<div class="sec-title">⚙️ المزيد</div>
 <div class="card"><h2>الموقع</h2>
 <label>اسم الموقع</label>
 <input id="locName" type="text" value="Richardson, TX">
@@ -179,31 +208,53 @@ audio{width:100%;margin-top:10px}
 <div class="note"><b>بصراحة، على الآيفون:</b> يصلك تنبيه بوقت الصلاة، واضغط عليه ليشتغل الأذان كاملاً. التنبيه التلقائي والصفحة مغلقة يحتاج سيرفر Push، والسيرفر غير موجود بعد — هذه النسخة جاهزة لـ Push (Service Worker + اشتراك) والتنبيه الفوري يعمل والصفحة مفتوحة. لن ندّعي أن Push السيرفر يعمل قبل بنائه.</div>
 </div>
 
-<div class="card"><h2>عن النسخة</h2>
-<div class="note">نور الحق — نسخة الويب PWA 1.0. مواقيت، قرآن، أذكار، قبلة، راديو. تعمل أوفلاين بعد أول زيارة. مجانية وبلا إعلانات.</div>
-</div>
-</section>
-<!-- حول التطبيق -->
-<section class="tab" id="tab-about">
 <div class="card"><h2>حول التطبيق</h2>
-<img class="dedication" src="./img/dedication_ruqah.webp" alt="صدقة جارية لوجه الله تعالى — عن والدي حسن الجدوع ووالدتي ختام الربيع — أطال الله بعمرهم">
-<div class="ded-text">صدقة جارية لوجه الله تعالى<br>عن والدي حسن الجدوع ووالدتي ختام الربيع<br>أطال الله بعمرهم</div>
+<img class="dedication" src="./img/dedication_ruqah.webp" alt="صدقة جارية لوجه الله تعالى — عن والدي حسن الجدوع ووالدتي — أطال الله بعمرهم">
+<div class="ded-text">صدقة جارية لوجه الله تعالى<br>عن والدي حسن الجدوع ووالدتي<br>أطال الله بعمرهم</div>
 <div class="about-line" style="margin-top:14px"><b>نور الحق</b><br>نسخة الويب 1.0</div>
 <div class="about-line">مجاناً وبدون إعلانات — كامل المزايا لوجه الله تعالى</div>
 <div class="about-line">جميع الحقوق محفوظة © الأيهم</div>
 </div>
 </section>
+
+<!-- القبلة — شاشة مستقلة مثل QiblaActivity في التطبيق -->
+<section class="screen" id="screen-qibla">
+<div class="sec-title">🧭 اتجاه القبلة</div>
+<div class="card">
+<div class="big" id="qiblaDeg">—</div>
+<div style="text-align:center;color:#7D5560;font-weight:400" id="qiblaDist">—</div>
+<div class="compass"><div class="needle" id="needle"></div><div class="center-dot"></div></div>
+<div style="text-align:center;color:#7D5560;font-size:15px;font-weight:400" id="qiblaHint">وجّه أعلى الهاتف نحو السهم الذهبي</div>
+<button class="btn" id="compassBtn" style="margin-top:12px">تفعيل البوصلة</button>
+<div class="note">على الآيفون: اضغط «تفعيل البوصلة» ثم اسمح بالوصول لاتجاه الجهاز. بدون الإذن تظهر الزاوية فقط من الشمال.</div>
+<div style="height:12px"></div>
+<button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
+</div>
+</section>
+
+<!-- الراديو — شاشة مستقلة مثل RadioActivity في التطبيق -->
+<section class="screen" id="screen-radio">
+<div class="sec-title">📻 راديو القرآن</div>
+<div class="card">
+<div id="radioList"></div>
+<audio id="radioAudio" controls preload="none"></audio>
+<div class="note" id="radioStatus">اختر محطة للاستماع.</div>
+<div style="height:12px"></div>
+<button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
+</div>
+</section>
+
+</div>
 </div>
 
-<nav><div class="in">
-<button data-tab="home" class="on">الرئيسية</button>
-<button data-tab="quran">القرآن</button>
-<button data-tab="adhkar">الأذكار</button>
-<button data-tab="qibla">القبلة</button>
-<button data-tab="radio">الراديو</button>
-<button data-tab="settings">الإعدادات</button>
-<button data-tab="about">حول التطبيق</button>
+<nav id="bottomNav"><div class="in">
+<button data-tab="home" class="on"><span class="nic">🏠</span>الرئيسية</button>
+<button data-tab="prayers"><span class="nic">🕌</span>الصلاة</button>
+<button data-tab="quran"><span class="nic">📖</span>القرآن</button>
+<button data-tab="adhkar"><span class="nic">🤲</span>الأذكار</button>
+<button data-tab="more"><span class="nic">⚙️</span>المزيد</button>
 </div></nav>
+<div id="toast" class="hidden"></div>
 <audio id="adhanAudio" preload="none"></audio>
 <script>
 "use strict";
@@ -249,23 +300,25 @@ function timesAsDates(date){
   const t=effTimes(date);
   return t.map(h=>{const d=new Date(date);const mins=Math.round(h*60);d.setHours(0,0,0,0);d.setMinutes(mins);return d;});
 }
-let firedToday="";
+let firedToday="", colonOn=true;
 function render(){
   const now=new Date();
   try{const h=new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{day:"numeric",month:"long",year:"numeric"}).format(now);document.getElementById("hijriDate").textContent=h;}catch(e){document.getElementById("hijriDate").textContent=now.toLocaleDateString("ar");}
-  document.getElementById("locLine").textContent=S.name+" — "+S.lat.toFixed(2)+", "+S.lng.toFixed(2);
+  document.getElementById("gregDate").textContent=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear()+" — "+S.name+" — "+S.lat.toFixed(2)+", "+S.lng.toFixed(2);
   const t=effTimes(now),dates=timesAsDates(now);
   let nextIdx=-1,nextDate=null;
   for(let i=0;i<6;i++){if(dates[i]>now){nextIdx=i;nextDate=dates[i];break}}
   if(nextIdx<0){const tm=timesAsDates(new Date(now.getTime()+86400000));nextIdx=0;nextDate=tm[0];}
   let html="";
   for(let i=0;i<6;i++){
-    html+='<div class="row'+(i===nextIdx?' next':'')+'"><span class="nm">'+NAMES[KEYS[i]]+(i===nextIdx?' <span class="next-tag">— القادمة</span>':'')+'</span><span class="tm">'+fmt(t[i])+'</span></div>';
+    html+='<div class="prow"><span class="nm">'+NAMES[KEYS[i]]+(i===nextIdx?' <span class="dot">●</span>':'')+'</span><span class="tm">'+fmt(t[i])+'</span></div>';
   }
   document.getElementById("timesList").innerHTML=html;
   const diff=nextDate-now,hh=Math.floor(diff/3600000),mm=Math.floor(diff%3600000/60000),ss=Math.floor(diff%60000/1000);
-  document.getElementById("countdown").innerHTML="المتبقي على صلاة <b>"+NAMES[KEYS[nextIdx]]+"</b>: <b>"+hh+":"+String(mm).padStart(2,"0")+":"+String(ss).padStart(2,"0")+"</b>";
-  // adhan trigger: exact minute match, once per day per prayer (skip sunrise)
+  colonOn=!colonOn;
+  const sep=colonOn?":":" ";
+  document.getElementById("nextName").textContent="الصلاة القادمة: "+NAMES[KEYS[nextIdx]];
+  document.getElementById("countdown").textContent="المتبقي "+hh+sep+String(mm).padStart(2,"0")+sep+String(ss).padStart(2,"0");
   const todayKey=now.toDateString();
   if(firedToday!==todayKey){firedToday=todayKey;window._fired={};}
   for(let i=0;i<6;i++){
@@ -295,20 +348,42 @@ setInterval(render,1000);
 </script>
 <script>
 "use strict";
-/* ===== Tabs ===== */
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+/* ===== Tabs + screens (مثل MainActivity: 5 تبويبات، والقبلة والراديو شاشتان مستقلتان) ===== */
+const $=id=>document.getElementById(id);
+let currentTab="home";
+function goTab(tab){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $("bottomNav").classList.remove("hidden");
   document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
-  b.classList.add("on");
+  const btn=document.querySelector('nav button[data-tab="'+tab+'"]');
+  if(btn)btn.classList.add("on");
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.getElementById("tab-"+b.dataset.tab).classList.add("active");
-  if(b.dataset.tab==="quran")loadQuran();
-  if(b.dataset.tab==="adhkar")loadAdhkar();
-  if(b.dataset.tab==="qibla")updateQibla();
+  $("tab-"+tab).classList.add("active");
+  currentTab=tab;
+  if(tab==="quran")loadQuran();
+  if(tab==="adhkar")loadAdhkar();
   window.scrollTo(0,0);
-});
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
+function showScreen(name){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $("bottomNav").classList.add("hidden");
+  $("screen-"+name).classList.add("active");
+  if(name==="qibla")updateQibla();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>goTab("home"));
+document.querySelectorAll(".cell[data-go]").forEach(c=>c.onclick=()=>goTab(c.dataset.go));
+document.querySelectorAll(".cell[data-screen]").forEach(c=>c.onclick=()=>showScreen(c.dataset.screen));
+let toastTimer=null;
+function showToast(msg){
+  const t=$("toast");t.textContent=msg;t.classList.remove("hidden");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.add("hidden"),2000);
+}
+document.querySelectorAll(".cell[data-soon]").forEach(c=>c.onclick=()=>showToast(c.dataset.soon+" — في تطبيق الأندرويد، وتُضاف لنسخة الويب قريباً"));
 
 /* ===== Settings ===== */
-const $=id=>document.getElementById(id);
 $("locName").value=S.name;$("latInput").value=S.lat;$("lngInput").value=S.lng;
 $("muezzinSel").value=S.muezzin;$("autoAdhanChk").checked=!!S.autoAdhan;
 if(S.msq&&S.msq.times){for(const k of["fajr","dhuhr","asr","maghrib","isha"]){if(S.msq.times[k])$("msq_"+k).value=S.msq.times[k];}updateMsqStatus();}
@@ -379,15 +454,15 @@ async function loadAdhkar(){
   }catch(e){$("adhkarList").innerHTML='<div class="note">تعذر تحميل الأذكار.</div>';}
 }
 function renderAdhkarCats(){
-  $("adhkarCats").innerHTML=adhkarData.map((c,i)=>'<button class="btn ghost" style="margin-top:6px" data-i="'+i+'">'+c.name+' ('+c.items.length+')</button>').join("");
+  $("adhkarCats").innerHTML=adhkarData.map((c,i)=>'<button class="btn" style="margin-top:6px" data-i="'+i+'">'+c.name+' ('+c.items.length+')</button>').join("");
   $("adhkarCats").querySelectorAll("button").forEach(b=>b.onclick=()=>renderAdhkar(+b.dataset.i));
   renderAdhkar(0);
 }
 function renderAdhkar(ci){
   const c=adhkarData[ci];
-  $("adhkarList").innerHTML="<h2 style='color:#d4af37;margin:10px 0'>"+c.name+"</h2>"+c.items.map((d,i)=>{
+  $("adhkarList").innerHTML="<h2 style='color:#5C1220;margin:10px 0'>"+c.name+"</h2>"+c.items.map((d,i)=>{
     const v=d.v?'<div class="virtue">'+d.v+'</div>':"";
-    return '<div class="card"><div class="dhikr">'+d.t.replace(/\n/g,"<br>")+'</div>'+v+'<button class="btn small counter" data-ci="'+ci+'" data-i="'+i+'" data-left="'+d.r+'">التكرار: '+d.r+' / '+d.r+'</button></div>';
+    return '<div class="card" style="border:1px solid #E8D0D4"><div class="dhikr">'+d.t.replace(/\n/g,"<br>")+'</div>'+v+'<button class="btn small counter" data-ci="'+ci+'" data-i="'+i+'" data-left="'+d.r+'">التكرار: '+d.r+' / '+d.r+'</button></div>';
   }).join("");
   $("adhkarList").querySelectorAll(".counter").forEach(b=>b.onclick=()=>{
     let left=+b.dataset.left-1;if(left<0)left=+b.dataset.i>=0?adhkarData[+b.dataset.ci].items[+b.dataset.i].r:0;
@@ -451,7 +526,6 @@ $("radioList").querySelectorAll("button").forEach(b=>b.onclick=()=>{
   $("radioList").querySelectorAll("button").forEach(x=>x.textContent="تشغيل");
   b.textContent="إيقاف";$("radioStatus").textContent="يُشغَّل الآن: "+STATIONS[i][0];
 });
-radioAudio.onplay=()=>{const i=STATIONS.findIndex(s=>radioAudio.src.includes(s[1].split("/").pop()));};
 radioAudio.onerror=()=>{$("radioStatus").textContent="تعذر تشغيل المحطة — تحقق من الاتصال.";};
 
 /* ===== Notifications / Push-ready ===== */
