@@ -1,5 +1,5 @@
 /* Noor Al Haq PWA — service worker v1 */
-const CACHE = "nooralhaq-web-v3";
+const CACHE = "nooralhaq-web-v4";
 const CORE = [
   "./",
   "./index.html",
