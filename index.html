@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b3d2e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="نور الحق">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<title>نور الحق</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:#06231a;color:#fff;min-height:100vh}
+.wrap{max-width:520px;margin:0 auto;padding:12px 14px 86px}
+header{text-align:center;padding:10px 0 4px}
+header .logo{width:72px;height:72px;border-radius:18px;border:2px solid #d4af37}
+h1{color:#d4af37;font-size:26px;margin:6px 0 2px}
+.sub{color:#bcd8c8;font-size:13px}
+.card{background:#0f3d2c;border:1px solid #1e5c44;border-radius:14px;padding:14px;margin-top:12px}
+.card h2{color:#d4af37;font-size:18px;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1px solid #1a4d38}
+.row:last-child{border-bottom:0}
+.row .nm{font-size:16px}
+.row .tm{font-size:16px;color:#ffd977;font-weight:700}
+.row.next{background:#143f2c;border-radius:10px}
+.next-tag{color:#d4af37;font-size:12px}
+.countdown{text-align:center;font-size:15px;color:#bcd8c8;margin-top:10px}
+.countdown b{color:#ffd977;font-size:20px}
+button{font-family:inherit;cursor:pointer}
+.btn{background:#d4af37;color:#3a2c00;border:0;border-radius:10px;padding:11px 16px;font-size:16px;font-weight:700;width:100%}
+.btn.ghost{background:transparent;color:#d4af37;border:1px solid #d4af37}
+.btn.small{width:auto;padding:7px 12px;font-size:14px}
+input,select{font-family:inherit;width:100%;background:#0a2e22;color:#fff;border:1px solid #2a6b4e;border-radius:9px;padding:10px;font-size:16px;margin:4px 0 10px}
+label{font-size:14px;color:#bcd8c8}
+.note{font-size:13px;color:#cfe3d4;line-height:1.8;background:#0a2e22;border:1px solid #2a6b4e;border-radius:10px;padding:10px;margin-top:12px}
+.note b{color:#ffd977}
+.hidden{display:none!important}
+.tab{display:none}
+.tab.active{display:block}
+nav{position:fixed;bottom:0;right:0;left:0;background:#082b1f;border-top:1px solid #1e5c44;padding:6px 4px calc(6px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:10}
+nav .in{max-width:520px;width:100%;display:flex}
+nav button{flex:1;background:none;border:0;color:#9dbfae;font-size:12px;padding:8px 2px;border-radius:8px}
+nav button.on{color:#ffd977;background:#123f31;font-weight:700}
+.list-item{background:#0f3d2c;border:1px solid #1e5c44;border-radius:10px;padding:12px;margin-top:8px;text-align:right;width:100%;color:#fff;font-size:16px}
+.list-item small{color:#bcd8c8;display:block;font-size:13px;margin-top:3px}
+.ayah{font-size:20px;line-height:2.1;text-align:justify;padding:4px 2px}
+.ayah .n{color:#d4af37;font-size:13px}
+.compass{width:220px;height:220px;border:3px solid #d4af37;border-radius:50%;margin:14px auto;position:relative;background:#0a2e22}
+.needle{position:absolute;left:50%;top:50%;width:4px;height:96px;background:#d4af37;transform-origin:50% 100%;margin-left:-2px;margin-top:-96px;border-radius:2px}
+.needle:after{content:"";position:absolute;top:-14px;left:-7px;border:9px solid transparent;border-bottom:16px solid #ffd977}
+.center-dot{position:absolute;left:50%;top:50%;width:14px;height:14px;background:#ffd977;border-radius:50%;margin:-7px}
+.big{text-align:center;font-size:26px;color:#ffd977;font-weight:700}
+.station{display:flex;justify-content:space-between;align-items:center;gap:8px}
+audio{width:100%;margin-top:10px}
+.banner{background:#d4af37;color:#3a2c00;border-radius:10px;padding:12px;text-align:center;font-weight:700;margin-top:12px}
+.dhikr{line-height:1.9;font-size:17px}
+.virtue{color:#bcd8c8;font-size:13px;margin-top:6px}
+.counter{margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<img class="logo" src="./icons/icon-192.png" alt="نور الحق">
+<h1>نور الحق</h1>
+<div class="sub" id="hijriDate">—</div>
+<div class="sub" id="locLine">Richardson, TX</div>
+</header>
+
+<div id="adhanBanner" class="banner hidden"></div>
+
+<!-- الرئيسية -->
+<section class="tab active" id="tab-home">
+<div class="card">
+<h2>مواقيت اليوم</h2>
+<div id="timesList"></div>
+<div class="countdown" id="countdown">—</div>
+</div>
+<div class="card">
+<button class="btn" id="playAdhanBtn">اسمع الأذان</button>
+<div style="height:8px"></div>
+<button class="btn ghost" id="stopAdhanBtn">إيقاف الأذان</button>
+<div class="note">على الآيفون: الأذان الكامل يشتغل والصفحة مفتوحة. إذا أغلقت الصفحة يصلك تنبيه بوقت الصلاة، واضغط عليه ليشتغل الأذان كاملاً.</div>
+</div>
+</section>
+
+<!-- القرآن -->
+<section class="tab" id="tab-quran">
+<div class="card"><h2>القرآن الكريم</h2>
+<input id="surahSearch" type="search" placeholder="ابحث عن سورة...">
+<div id="surahList"><div class="note">جارٍ تحميل السور...</div></div>
+<div id="surahReader" class="hidden">
+<button class="btn ghost small" id="backSurahs">رجوع لقائمة السور</button>
+<h2 id="readerTitle" style="margin-top:10px"></h2>
+<div id="readerBody"></div>
+</div>
+</div>
+</section>
+
+<!-- الأذكار -->
+<section class="tab" id="tab-adhkar">
+<div class="card"><h2>الأذكار والأدعية</h2>
+<div id="adhkarCats"></div>
+<div id="adhkarList"><div class="note">جارٍ تحميل الأذكار...</div></div>
+</div>
+</section>
+
+<!-- القبلة -->
+<section class="tab" id="tab-qibla">
+<div class="card"><h2>اتجاه القبلة</h2>
+<div class="big" id="qiblaDeg">—</div>
+<div style="text-align:center;color:#bcd8c8" id="qiblaDist">—</div>
+<div class="compass"><div class="needle" id="needle"></div><div class="center-dot"></div></div>
+<div style="text-align:center;color:#bcd8c8;font-size:14px" id="qiblaHint">وجّه أعلى الهاتف نحو السهم الذهبي</div>
+<button class="btn" id="compassBtn" style="margin-top:12px">تفعيل البوصلة</button>
+<div class="note">على الآيفون: اضغط «تفعيل البوصلة» ثم اسمح بالوصول لاتجاه الجهاز. بدون الإذن تظهر الزاوية فقط من الشمال.</div>
+</div>
+</section>
+
+<!-- الراديو -->
+<section class="tab" id="tab-radio">
+<div class="card"><h2>راديو القرآن</h2>
+<div id="radioList"></div>
+<audio id="radioAudio" controls preload="none"></audio>
+<div class="note" id="radioStatus">اختر محطة للاستماع.</div>
+</div>
+</section>
+
+<!-- الإعدادات -->
+<section class="tab" id="tab-settings">
+<div class="card"><h2>الموقع</h2>
+<label>اسم الموقع</label>
+<input id="locName" type="text" value="Richardson, TX">
+<label>خط العرض</label>
+<input id="latInput" type="number" step="0.0001" value="32.95">
+<label>خط الطول</label>
+<input id="lngInput" type="number" step="0.0001" value="-96.73">
+<button class="btn ghost" id="geoBtn">حدد موقعي تلقائياً</button>
+<div style="height:8px"></div>
+<button class="btn" id="saveLocBtn">حفظ الموقع</button>
+<div class="note">المواقيت تُحسب بطريقة أمريكا الشمالية ISNA: الفجر 15°، العشاء 15°، والعصر شافعي. منطقة الوقت تُؤخذ من جهازك.</div>
+</div>
+
+<div class="card"><h2>أوقات الجامع</h2>
+<div class="note">أدخل أوقات جامعك الخمسة مرة واحدة، وسيُحفظ الفرق عن الحساب الفلكي ويُطبق كل يوم تلقائياً (نفس منطق مزامنة الجامع في تطبيق الأندرويد). اتركها فارغة لاستخدام الحساب فقط.</div>
+<label>الفجر</label><input id="msq_fajr" type="time">
+<label>الظهر</label><input id="msq_dhuhr" type="time">
+<label>العصر</label><input id="msq_asr" type="time">
+<label>المغرب</label><input id="msq_maghrib" type="time">
+<label>العشاء</label><input id="msq_isha" type="time">
+<button class="btn" id="saveMsqBtn">حفظ أوقات الجامع</button>
+<div style="height:8px"></div>
+<button class="btn ghost" id="clearMsqBtn">مسح أوقات الجامع والرجوع للحساب</button>
+<div class="note" id="msqStatus">لا توجد أوقات جامع محفوظة.</div>
+</div>
+
+<div class="card"><h2>الأذان</h2>
+<label>المؤذن</label>
+<select id="muezzinSel">
+<option value="adhan_makkah.mp3">مكة المكرمة</option>
+<option value="adhan_alafasy.mp3">مشاري العفاسي</option>
+</select>
+<label><input type="checkbox" id="autoAdhanChk" style="width:auto"> تشغيل الأذان تلقائياً عند وقت الصلاة والصفحة مفتوحة</label>
+<div class="note">الأذان الكامل لا يشتغل من إشعار والهاتف مقفل على الآيفون — هذا حد من نظام iOS نفسه، وليس من التطبيق.</div>
+</div>
+
+<div class="card"><h2>الإشعارات</h2>
+<button class="btn" id="notifBtn">فعّل الإشعارات</button>
+<div class="note" id="notifStatus">الحالة: لم يُطلب الإذن بعد.</div>
+<div class="note"><b>بصراحة، على الآيفون:</b> يصلك تنبيه بوقت الصلاة، واضغط عليه ليشتغل الأذان كاملاً. التنبيه التلقائي والصفحة مغلقة يحتاج سيرفر Push، والسيرفر غير موجود بعد — هذه النسخة جاهزة لـ Push (Service Worker + اشتراك) والتنبيه الفوري يعمل والصفحة مفتوحة. لن ندّعي أن Push السيرفر يعمل قبل بنائه.</div>
+</div>
+
+<div class="card"><h2>عن النسخة</h2>
+<div class="note">نور الحق — نسخة الويب PWA 1.0. مواقيت، قرآن، أذكار، قبلة، راديو. تعمل أوفلاين بعد أول زيارة. مجانية وبلا إعلانات.</div>
+</div>
+</section>
+</div>
+
+<nav><div class="in">
+<button data-tab="home" class="on">الرئيسية</button>
+<button data-tab="quran">القرآن</button>
+<button data-tab="adhkar">الأذكار</button>
+<button data-tab="qibla">القبلة</button>
+<button data-tab="radio">الراديو</button>
+<button data-tab="settings">الإعدادات</button>
+</div></nav>
+<audio id="adhanAudio" preload="none"></audio>
+<script>
+"use strict";
+/* ===== PrayTimes — port of PrayTimes.java (method ISNA=2, Asr Standard) ===== */
+const PT_PARAMS=[[16,4,14,0],[18,0,18,0],[15,0,15,0],[18,0,17,0],[18.5,0,0,90],[19.5,0,17.5,0],[17.7,4.5,14,0]];
+const D2R=Math.PI/180, R2D=180/Math.PI;
+function fixAngle(a){a%=360;return a<0?a+360:a}
+function fixHour(h){h%=24;return h<0?h+24:h}
+function sD(d){return Math.sin(d*D2R)} function cD(d){return Math.cos(d*D2R)}
+function julianDate(y,m,d){if(m<=2){y--;m+=12}const a=Math.floor(y/100),b=2-a+Math.floor(a/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524.5}
+let PT={lat:32.95,lng:-96.73,jd:0};
+function sunPosition(jd){const d=jd-2451545,g=fixAngle(357.529+0.98560028*d),q=fixAngle(280.459+0.98564736*d),l=fixAngle(q+1.915*sD(g)+0.020*sD(2*g)),e=23.439-0.00000036*d,ra=fixHour(Math.atan2(cD(e)*sD(l),cD(l))*R2D/15),decl=Math.asin(sD(e)*sD(l))*R2D;return[decl,q/15-ra]}
+function midDay(t){return fixHour(12-sunPosition(PT.jd+t/24)[1])}
+function sunAngleTime(angle,t,ccw){const sp=sunPosition(PT.jd+t/24),decl=sp[0],noon=midDay(t),tt=Math.acos((-sD(angle)-sD(decl)*sD(PT.lat))/(cD(decl)*cD(PT.lat)))*R2D/15;return noon+(ccw?-tt:tt)}
+function asrTime(factor,t){const sp=sunPosition(PT.jd+t/24),decl=sp[0],angle=-Math.atan(1/(factor+Math.tan(Math.abs(PT.lat-decl)*D2R)))*R2D;return sunAngleTime(angle,t,false)}
+function prayTimes(date,lat,lng){
+  PT.lat=lat;PT.lng=lng;
+  const tz=-new Date(date.getFullYear(),date.getMonth(),date.getDate(),12).getTimezoneOffset()/60;
+  PT.jd=julianDate(date.getFullYear(),date.getMonth()+1,date.getDate())-lng/360;
+  const p=PT_PARAMS[2],t=[5,6,12,13,18,18,18];
+  const sunset=sunAngleTime(0.833,t[4],false);
+  const x=[sunAngleTime(p[0],t[0],true),sunAngleTime(0.833,t[1],true),midDay(t[2]),asrTime(1,t[3]),p[1]>0?sunAngleTime(p[1],t[5],false):sunset,p[3]>0?0:0];
+  x[4]=p[1]>0?sunAngleTime(p[1],t[5],false):sunset;
+  x[5]=p[3]>0?x[4]+p[3]/60:sunAngleTime(p[2],t[6],false);
+  return x.map(v=>v+tz-lng/15);
+}
+function fmt(h){h=((h%24)+24)%24;let hh=Math.floor(h),mm=Math.round((h-hh)*60);if(mm===60){mm=0;hh=(hh+1)%24}const pm=hh>=12;let h12=hh%12;if(h12===0)h12=12;return h12+":"+(mm<10?"0":"")+mm+(pm?" م":" ص")}
+function toMin(h){return Math.round((((h%24)+24)%24)*60)}
+
+/* ===== State ===== */
+const KEYS=["fajr","sunrise","dhuhr","asr","maghrib","isha"];
+const NAMES={fajr:"الفجر",sunrise:"الشروق",dhuhr:"الظهر",asr:"العصر",maghrib:"المغرب",isha:"العشاء"};
+const DEF={name:"Richardson, TX",lat:32.95,lng:-96.73,muezzin:"adhan_makkah.mp3",autoAdhan:true,msq:null};
+let S=Object.assign({},DEF);
+try{const s=JSON.parse(localStorage.getItem("nhq_settings")||"null");if(s)S=Object.assign({},DEF,s);}catch(e){}
+function saveS(){localStorage.setItem("nhq_settings",JSON.stringify(S))}
+function effTimes(date){
+  const t=prayTimes(date,S.lat,S.lng);
+  if(S.msq){for(let i=0;i<6;i++){if(i===1)continue;const k=KEYS[i];if(S.msq.off&&S.msq.off[k])t[i]+=S.msq.off[k]/60;}}
+  return t;
+}
+function timesAsDates(date){
+  const t=effTimes(date);
+  return t.map(h=>{const d=new Date(date);const mins=Math.round(h*60);d.setHours(0,0,0,0);d.setMinutes(mins);return d;});
+}
+let firedToday="";
+function render(){
+  const now=new Date();
+  try{const h=new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{day:"numeric",month:"long",year:"numeric"}).format(now);document.getElementById("hijriDate").textContent=h;}catch(e){document.getElementById("hijriDate").textContent=now.toLocaleDateString("ar");}
+  document.getElementById("locLine").textContent=S.name+" — "+S.lat.toFixed(2)+", "+S.lng.toFixed(2);
+  const t=effTimes(now),dates=timesAsDates(now);
+  let nextIdx=-1,nextDate=null;
+  for(let i=0;i<6;i++){if(dates[i]>now){nextIdx=i;nextDate=dates[i];break}}
+  if(nextIdx<0){const tm=timesAsDates(new Date(now.getTime()+86400000));nextIdx=0;nextDate=tm[0];}
+  let html="";
+  for(let i=0;i<6;i++){
+    html+='<div class="row'+(i===nextIdx?' next':'')+'"><span class="nm">'+NAMES[KEYS[i]]+(i===nextIdx?' <span class="next-tag">— القادمة</span>':'')+'</span><span class="tm">'+fmt(t[i])+'</span></div>';
+  }
+  document.getElementById("timesList").innerHTML=html;
+  const diff=nextDate-now,hh=Math.floor(diff/3600000),mm=Math.floor(diff%3600000/60000),ss=Math.floor(diff%60000/1000);
+  document.getElementById("countdown").innerHTML="المتبقي على صلاة <b>"+NAMES[KEYS[nextIdx]]+"</b>: <b>"+hh+":"+String(mm).padStart(2,"0")+":"+String(ss).padStart(2,"0")+"</b>";
+  // adhan trigger: exact minute match, once per day per prayer (skip sunrise)
+  const todayKey=now.toDateString();
+  if(firedToday!==todayKey){firedToday=todayKey;window._fired={};}
+  for(let i=0;i<6;i++){
+    if(i===1)continue;
+    const d=dates[i];
+    if(Math.abs(now-d)<45000 && now>=d && !window._fired[i]){
+      window._fired[i]=true;
+      onPrayerTime(KEYS[i]);
+    }
+  }
+}
+function onPrayerTime(key){
+  const b=document.getElementById("adhanBanner");
+  b.textContent="حان وقت صلاة "+NAMES[key];
+  b.classList.remove("hidden");
+  if("Notification" in window && Notification.permission==="granted"){
+    try{new Notification("حان وقت صلاة "+NAMES[key],{body:"اضغط لفتح نور الحق وسماع الأذان كاملاً"});}catch(e){}
+  }
+  if(S.autoAdhan)playAdhan();
+  setTimeout(()=>b.classList.add("hidden"),60000);
+}
+const adhanAudio=document.getElementById("adhanAudio");
+function playAdhan(){adhanAudio.src="./adhan/"+S.muezzin;adhanAudio.play().catch(e=>{alert("اضغط تشغيل مرة أخرى — المتصفح يمنع الصوت التلقائي قبل أي تفاعل مع الصفحة.");});}
+document.getElementById("playAdhanBtn").onclick=playAdhan;
+document.getElementById("stopAdhanBtn").onclick=()=>{adhanAudio.pause();adhanAudio.currentTime=0;};
+setInterval(render,1000);
+</script>
+<script>
+"use strict";
+/* ===== Tabs ===== */
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tab-"+b.dataset.tab).classList.add("active");
+  if(b.dataset.tab==="quran")loadQuran();
+  if(b.dataset.tab==="adhkar")loadAdhkar();
+  if(b.dataset.tab==="qibla")updateQibla();
+  window.scrollTo(0,0);
+});
+
+/* ===== Settings ===== */
+const $=id=>document.getElementById(id);
+$("locName").value=S.name;$("latInput").value=S.lat;$("lngInput").value=S.lng;
+$("muezzinSel").value=S.muezzin;$("autoAdhanChk").checked=!!S.autoAdhan;
+if(S.msq&&S.msq.times){for(const k of["fajr","dhuhr","asr","maghrib","isha"]){if(S.msq.times[k])$("msq_"+k).value=S.msq.times[k];}updateMsqStatus();}
+$("saveLocBtn").onclick=()=>{
+  S.name=$("locName").value.trim()||"موقعي";
+  S.lat=parseFloat($("latInput").value)||32.95;S.lng=parseFloat($("lngInput").value)||-96.73;
+  saveS();render();alert("تم حفظ الموقع.");
+};
+$("geoBtn").onclick=()=>{
+  if(!navigator.geolocation){alert("المتصفح لا يدعم تحديد الموقع.");return;}
+  navigator.geolocation.getCurrentPosition(p=>{
+    S.lat=+p.coords.latitude.toFixed(4);S.lng=+p.coords.longitude.toFixed(4);S.name="موقعي الحالي";
+    $("latInput").value=S.lat;$("lngInput").value=S.lng;$("locName").value=S.name;
+    saveS();render();alert("تم تحديد موقعك.");
+  },()=>alert("تعذر تحديد الموقع — تأكد من إذن الموقع في إعدادات الآيفون."),{timeout:10000});
+};
+$("muezzinSel").onchange=e=>{S.muezzin=e.target.value;saveS();};
+$("autoAdhanChk").onchange=e=>{S.autoAdhan=e.target.checked;saveS();};
+function parseTime(v){const[a,b]=v.split(":").map(Number);return a*60+b;}
+$("saveMsqBtn").onclick=()=>{
+  const times={},off={};let any=false;
+  const calc=effTimesNoMsq(new Date());
+  for(const k of["fajr","dhuhr","asr","maghrib","isha"]){
+    const v=$("msq_"+k).value;
+    if(v){times[k]=v;const idx=KEYS.indexOf(k);off[k]=parseTime(v)-toMin(calc[idx]);any=true;}
+  }
+  if(!any){alert("أدخل وقتاً واحداً على الأقل.");return;}
+  S.msq={times,off};saveS();render();updateMsqStatus();alert("تم حفظ أوقات الجامع — تُطبق فروقاتها كل يوم.");
+};
+function effTimesNoMsq(date){const keep=S.msq;S.msq=null;const t=effTimes(date);S.msq=keep;return t;}
+$("clearMsqBtn").onclick=()=>{S.msq=null;saveS();render();updateMsqStatus();for(const k of["fajr","dhuhr","asr","maghrib","isha"])$("msq_"+k).value="";};
+function updateMsqStatus(){
+  const el=$("msqStatus");
+  if(!S.msq){el.textContent="لا توجد أوقات جامع محفوظة.";return;}
+  const parts=Object.keys(S.msq.off).map(k=>NAMES[k]+" "+(S.msq.off[k]>=0?"+":"")+S.msq.off[k]+" دقيقة");
+  el.textContent="أوقات الجامع مفعّلة. الفروقات عن الحساب: "+parts.join("، ")+".";
+}
+
+/* ===== Quran (lazy) ===== */
+let quranData=null;
+async function loadQuran(){
+  if(quranData){renderSurahs("");return;}
+  try{
+    const r=await fetch("./quran_uthmani.json");quranData=await r.json();renderSurahs("");
+  }catch(e){$("surahList").innerHTML='<div class="note">تعذر تحميل ملف القرآن — تحقق من الاتصال ثم أعد فتح التبويب.</div>';}
+}
+function renderSurahs(q){
+  const list=quranData.filter(s=>!q||s.name.includes(q)||s.ename.toLowerCase().includes(q.toLowerCase()));
+  $("surahList").innerHTML=list.map(s=>'<button class="list-item" data-n="'+s.n+'">'+s.n+'. '+s.name+'<small>'+s.ename+' — '+s.t+' — '+s.ayahs.length+' آية</small></button>').join("")||'<div class="note">لا توجد نتائج.</div>';
+  $("surahList").querySelectorAll("button").forEach(b=>b.onclick=()=>openSurah(+b.dataset.n));
+  $("surahReader").classList.add("hidden");$("surahList").classList.remove("hidden");
+}
+$("surahSearch").oninput=e=>{if(quranData)renderSurahs(e.target.value.trim());};
+function openSurah(n){
+  const s=quranData.find(x=>x.n===n);if(!s)return;
+  $("readerTitle").textContent=s.n+". سورة "+s.name+" ("+s.t+")";
+  $("readerBody").innerHTML='<div class="ayah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>'+s.ayahs.map((a,i)=>'<div class="ayah">'+a+' <span class="n">﴿'+(i+1)+'﴾</span></div>').join("");
+  $("surahList").classList.add("hidden");$("surahReader").classList.remove("hidden");
+}
+$("backSurahs").onclick=()=>{renderSurahs($("surahSearch").value.trim());};
+
+/* ===== Adhkar (lazy) ===== */
+let adhkarData=null;
+async function loadAdhkar(){
+  if(adhkarData){renderAdhkarCats();return;}
+  try{
+    const r=await fetch("./adhkar.json");adhkarData=await r.json();renderAdhkarCats();
+  }catch(e){$("adhkarList").innerHTML='<div class="note">تعذر تحميل الأذكار.</div>';}
+}
+function renderAdhkarCats(){
+  $("adhkarCats").innerHTML=adhkarData.map((c,i)=>'<button class="btn ghost" style="margin-top:6px" data-i="'+i+'">'+c.name+' ('+c.items.length+')</button>').join("");
+  $("adhkarCats").querySelectorAll("button").forEach(b=>b.onclick=()=>renderAdhkar(+b.dataset.i));
+  renderAdhkar(0);
+}
+function renderAdhkar(ci){
+  const c=adhkarData[ci];
+  $("adhkarList").innerHTML="<h2 style='color:#d4af37;margin:10px 0'>"+c.name+"</h2>"+c.items.map((d,i)=>{
+    const v=d.v?'<div class="virtue">'+d.v+'</div>':"";
+    return '<div class="card"><div class="dhikr">'+d.t.replace(/\n/g,"<br>")+'</div>'+v+'<button class="btn small counter" data-ci="'+ci+'" data-i="'+i+'" data-left="'+d.r+'">التكرار: '+d.r+' / '+d.r+'</button></div>';
+  }).join("");
+  $("adhkarList").querySelectorAll(".counter").forEach(b=>b.onclick=()=>{
+    let left=+b.dataset.left-1;if(left<0)left=+b.dataset.i>=0?adhkarData[+b.dataset.ci].items[+b.dataset.i].r:0;
+    b.dataset.left=left;
+    const total=adhkarData[+b.dataset.ci].items[+b.dataset.i].r;
+    b.textContent=left===0?"تم ✓ — اضغط لإعادة العد":"التكرار: "+left+" / "+total;
+  });
+}
+
+/* ===== Qibla ===== */
+function qiblaBearing(lat,lon){
+  const la1=lat*Math.PI/180,lo1=lon*Math.PI/180,la2=21.4225*Math.PI/180,lo2=39.8262*Math.PI/180,dLo=lo2-lo1;
+  const y=Math.sin(dLo)*Math.cos(la2),x=Math.cos(la1)*Math.sin(la2)-Math.sin(la1)*Math.cos(la2)*Math.cos(dLo);
+  return (Math.atan2(y,x)*180/Math.PI+360)%360;
+}
+function qiblaDistKm(lat,lon){
+  const la1=lat*Math.PI/180,lo1=lon*Math.PI/180,la2=21.4225*Math.PI/180,lo2=39.8262*Math.PI/180;
+  const a=Math.sin((la2-la1)/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin((lo2-lo1)/2)**2;
+  return Math.round(6371*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+}
+let qiblaDeg=qiblaBearing(S.lat,S.lng);
+function updateQibla(){
+  qiblaDeg=qiblaBearing(S.lat,S.lng);
+  $("qiblaDeg").textContent=Math.round(qiblaDeg)+"° من الشمال";
+  $("qiblaDist").textContent="المسافة إلى مكة: "+qiblaDistKm(S.lat,S.lng).toLocaleString("en")+" كم";
+  $("needle").style.transform="rotate("+qiblaDeg+"deg)";
+}
+$("compassBtn").onclick=async()=>{
+  const start=()=>{
+    window.addEventListener("deviceorientation",e=>{
+      let heading=null;
+      if(e.webkitCompassHeading!=null)heading=e.webkitCompassHeading;
+      else if(e.alpha!=null)heading=360-e.alpha;
+      if(heading!=null){
+        const rel=(qiblaDeg-heading+360)%360;
+        $("needle").style.transform="rotate("+rel+"deg)";
+        $("qiblaHint").textContent="البوصلة مفعّلة — وجّه أعلى الهاتف نحو السهم الذهبي";
+      }
+    });
+    $("qiblaHint").textContent="البوصلة مفعّلة — حرّك الهاتف ببطء حتى يستقر السهم.";
+  };
+  if(typeof DeviceOrientationEvent!=="undefined"&&typeof DeviceOrientationEvent.requestPermission==="function"){
+    try{const r=await DeviceOrientationEvent.requestPermission();if(r==="granted")start();else alert("لم تسمح بالوصول للبوصلة.");}catch(e){alert("تعذر طلب إذن البوصلة.");}
+  }else start();
+};
+
+/* ===== Radio ===== */
+const STATIONS=[
+["سعد الغامدي","https://backup.qurango.net/radio/saad_alghamdi"],
+["سعود الشريم","https://backup.qurango.net/radio/saud_alshuraim"],
+["عبد الرحمن السديس","https://backup.qurango.net/radio/abdulrahman_alsudaes"],
+["عبد الباسط عبد الصمد","https://backup.qurango.net/radio/abdulbasit_abdulsamad_mojawwad"],
+["أحمد العجمي","https://backup.qurango.net/radio/ahmad_alajmy"],
+["أبو بكر الشاطري","https://backup.qurango.net/radio/shaik_abu_bakr_al_shatri"]];
+const radioAudio=$("radioAudio");
+$("radioList").innerHTML=STATIONS.map((s,i)=>'<div class="card station"><span>'+s[0]+'</span><button class="btn small" data-i="'+i+'">تشغيل</button></div>').join("");
+$("radioList").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.i;
+  if(radioAudio.src===STATIONS[i][1]&&!radioAudio.paused){radioAudio.pause();b.textContent="تشغيل";$("radioStatus").textContent="متوقف.";return;}
+  radioAudio.src=STATIONS[i][1];radioAudio.play().catch(()=>{$("radioStatus").textContent="تعذر تشغيل المحطة — تحقق من الاتصال.";});
+  $("radioList").querySelectorAll("button").forEach(x=>x.textContent="تشغيل");
+  b.textContent="إيقاف";$("radioStatus").textContent="يُشغَّل الآن: "+STATIONS[i][0];
+});
+radioAudio.onplay=()=>{const i=STATIONS.findIndex(s=>radioAudio.src.includes(s[1].split("/").pop()));};
+radioAudio.onerror=()=>{$("radioStatus").textContent="تعذر تشغيل المحطة — تحقق من الاتصال.";};
+
+/* ===== Notifications / Push-ready ===== */
+$("notifBtn").onclick=async()=>{
+  const st=$("notifStatus");
+  if(!("Notification" in window)){st.textContent="الحالة: هذا المتصفح لا يدعم الإشعارات.";return;}
+  const perm=await Notification.requestPermission();
+  st.textContent="الحالة: إذن الإشعارات = "+perm+".";
+  if(perm==="granted"){
+    try{new Notification("نور الحق",{body:"تم تفعيل الإشعارات — ستصلك تنبيهات الصلاة والصفحة مفتوحة."});}catch(e){}
+  }
+  try{
+    if("serviceWorker" in navigator){
+      const reg=await navigator.serviceWorker.ready;
+      const sub=await reg.pushManager.getSubscription();
+      st.textContent+=" اشتراك Push: "+(sub?"موجود":"غير موجود — لا سيرفر Push بعد، فلا اشتراك يُنشأ.");
+    }
+  }catch(e){st.textContent+=" (تعذر فحص اشتراك Push).";}
+};
+
+/* ===== Service worker ===== */
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("./sw.js").catch(()=>{});
+}
+render();updateQibla();
+</script>
+</body>
+</html>
