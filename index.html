@@ -102,6 +102,37 @@ audio{width:100%;margin-top:10px}
 #toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#4A0E1A;color:#E8C86A;padding:10px 18px;border-radius:24px;font-size:15px;z-index:20;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
 .sec-title{color:#E8C86A;font-size:26px;text-align:center;margin:6px 0 12px}
 .sec-sub{text-align:center;color:#E8D0D4;font-size:15px;font-weight:400;margin-bottom:12px}
+/* خطوات مرقمة — PrayerGuideActivity: دائرة ذهبية برقم + بطاقة بيضاء */
+.step{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:14px;margin-bottom:10px}
+.step .num{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:#E8C86A;color:#5C1220;display:flex;align-items:center;justify-content:center;font-size:18px}
+.step .tx{color:#5C1220;font-size:17px;line-height:1.7;font-weight:400}
+.guide-h{color:#E8C86A;font-size:21px;margin:14px 0 10px}
+.text-card{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px}
+.text-card h3{color:#E8C86A;font-size:18px;margin-bottom:6px}
+.text-card p{font-family:"Amiri",serif;font-size:20px;line-height:2;color:#5C1220}
+/* التقويم الهجري — HijriCalendarActivity: شبكة 7 أعمدة تبدأ بالسبت، اليوم ذهبي، المناسبة عنابية */
+.hcal-nav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hcal-nav .mname{flex:1;text-align:center;color:#fff;font-size:21px}
+.hcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.hcal-wd{text-align:center;color:#E8C86A;font-size:13px;padding:4px 0}
+.hcal-cell{background:transparent;border:1px solid #7D5560;border-radius:10px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:18px;padding:4px 0}
+.hcal-cell.today{background:#E8C86A;color:#5C1220;border-color:#E8C86A}
+.hcal-cell.occ{background:#4A0E1A;border-color:#4A0E1A}
+.hcal-cell .oc{font-size:10px;color:#E8C86A;line-height:1.2;text-align:center}
+.hcal-cell.today .oc{color:#5C1220}
+.hcal-empty{min-height:56px}
+/* المسبحة — TasbihActivity: دائرة كبيرة 300px */
+.tasbih-circle{width:280px;height:280px;border-radius:50%;background:#4A0E1A;border:3px solid #E8C86A;margin:12px auto;display:flex;align-items:center;justify-content:center;font-size:84px;color:#fff;cursor:pointer;user-select:none;-webkit-user-select:none}
+.tasbih-dhikr{text-align:center;color:#E8C86A;font-size:23px;padding:12px;border:1px solid #E8C86A;border-radius:14px;cursor:pointer;background:transparent}
+.tasbih-total{text-align:center;color:#E8D0D4;font-size:15px;font-weight:400;margin-top:8px}
+/* الحديث */
+.hadith-item{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px}
+.hadith-item .ar{font-family:"Amiri",serif;font-size:21px;line-height:2;color:#5C1220;text-align:justify}
+.hadith-item .ref{color:#7D5560;font-size:14px;font-weight:400;margin-top:6px}
+.hadith-item .grade{display:inline-block;background:#E8C86A;color:#5C1220;border-radius:12px;padding:2px 10px;font-size:13px;margin-top:6px}
+.zakat-result{text-align:center;font-size:21px;color:#5C1220;min-height:60px;display:flex;align-items:center;justify-content:center}
+/* العدّاد التنازلي: أرقام بعرض ثابت حتى لا تنط الأرقام كل ثانية */
+.cd{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";direction:ltr;unicode-bidi:isolate;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -128,14 +159,14 @@ audio{width:100%;margin-top:10px}
 <button class="cell" data-screen="radio"><span class="ic">📻</span><span class="lb">الراديو</span></button>
 </div>
 <div class="grid-row">
-<button class="cell" data-soon="الحديث"><span class="ic">📚</span><span class="lb">الحديث</span></button>
-<button class="cell" data-soon="التقويم الهجري"><span class="ic">📅</span><span class="lb">التقويم الهجري</span></button>
-<button class="cell" data-soon="المسبحة"><span class="ic">📿</span><span class="lb">المسبحة</span></button>
+<button class="cell" data-screen="hadith"><span class="ic">📚</span><span class="lb">الحديث</span></button>
+<button class="cell" data-screen="hcal"><span class="ic">📅</span><span class="lb">التقويم الهجري</span></button>
+<button class="cell" data-screen="tasbih"><span class="ic">📿</span><span class="lb">المسبحة</span></button>
 </div>
 <div class="grid-row">
 <button class="cell" data-go="adhkar"><span class="ic">🤲</span><span class="lb">الأذكار</span></button>
-<button class="cell" data-soon="تعلم الصلاة"><span class="ic">🕌</span><span class="lb">تعلم الصلاة</span></button>
-<button class="cell" data-soon="الزكاة"><span class="ic">💰</span><span class="lb">الزكاة</span></button>
+<button class="cell" data-screen="guide"><span class="ic">🕌</span><span class="lb">تعلم الصلاة</span></button>
+<button class="cell" data-screen="zakat"><span class="ic">💰</span><span class="lb">الزكاة</span></button>
 </div>
 </div>
 <img class="banner-img" src="./img/dua_banner.jpg" alt="دعاء">
@@ -180,8 +211,8 @@ audio{width:100%;margin-top:10px}
 <section class="tab" id="tab-more">
 <div class="sec-title">⚙️ المزيد</div>
 <div class="card"><h2>الموقع</h2>
-<label>اسم الموقع</label>
-<input id="locName" type="text" value="Richardson, TX">
+<label>اسم المدينة (تظهر أعلى الصفحة)</label>
+<input id="locName" type="text" value="ريتشاردسون">
 <label>خط العرض</label>
 <input id="latInput" type="number" step="0.0001" value="32.95">
 <label>خط الطول</label>
@@ -260,6 +291,88 @@ audio{width:100%;margin-top:10px}
 </div>
 </section>
 
+<!-- تعلم الصلاة — مطابقة PrayerGuideActivity.java: ركعات + وضوء + خطوات + تشهد -->
+<section class="screen" id="screen-guide">
+<div class="sec-title">🕌 تعلم الصلاة</div>
+<div class="guide-h">🔢 عدد الركعات</div>
+<div id="guideRakas"></div>
+<div class="guide-h">💧 خطوات الوضوء</div>
+<div id="guideWudu"></div>
+<div class="guide-h">🕌 خطوات الصلاة</div>
+<div id="guideSteps"></div>
+<div class="guide-h">📜 التشهد والصلاة الإبراهيمية</div>
+<div class="note" style="background:#F7F1E6">التشهد يُقرأ عند الجلوس بعد الركعة الثانية (التشهد الأول) وفي آخر الصلاة (التشهد الأخير)، وفي التشهد الأخير تُقرأ بعده الصلاة الإبراهيمية ثم الدعاء ثم التسليم.</div>
+<div class="text-card"><h3>التشهد</h3><p>التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ</p></div>
+<div class="text-card"><h3>الصلاة الإبراهيمية</h3><p>اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ</p></div>
+<button class="btn ghost" data-back style="margin-top:6px">‹ رجوع للرئيسية</button>
+</section>
+
+<!-- التقويم الهجري — مطابقة HijriCalendarActivity.java: تحويل Hijri.java الجدولي + مناسبات -->
+<section class="screen" id="screen-hcal">
+<div class="sec-title">📅 التقويم الهجري</div>
+<div class="card">
+<div class="hcal-nav">
+<button class="btn small" id="hcalPrev">◀</button>
+<div class="mname" id="hcalMonth" style="color:#5C1220">—</div>
+<button class="btn small" id="hcalNext">▶</button>
+</div>
+<div class="hcal-grid" id="hcalGrid"></div>
+<div class="note" id="hcalToday">—</div>
+<div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+<button class="btn ghost small" id="hcalAdjMinus">− يوم</button>
+<button class="btn ghost small" id="hcalAdjPlus">+ يوم</button>
+<span style="color:#7D5560;font-size:14px;font-weight:400" id="hcalAdjLabel">تعديل التاريخ: 0</span>
+</div>
+<div style="height:12px"></div>
+<button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
+</div>
+</section>
+
+<!-- الحديث — مطابقة HadithStore.java: 14 كتاباً، المواضيع من index.json، النصوص من CDN -->
+<section class="screen" id="screen-hadith">
+<div class="sec-title">📚 الحديث الشريف</div>
+<div class="card">
+<input id="hadithSearch" type="search" placeholder="ابحث عن كتاب أو موضوع...">
+<div id="hadithView"><div class="note">جارٍ تحميل الكتب...</div></div>
+<div style="height:12px"></div>
+<button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
+</div>
+</section>
+
+<!-- المسبحة — مطابقة TasbihActivity.java: 15 ذكراً، عدّاد محفوظ -->
+<section class="screen" id="screen-tasbih">
+<div class="sec-title">📿 المسبحة</div>
+<div class="card">
+<select id="tasbihSel" style="margin-bottom:4px"></select>
+<div style="text-align:center;color:#7D5560;font-size:15px;font-weight:400">اضغط على الدائرة للتسبيح</div>
+<div class="tasbih-circle" id="tasbihCircle">0</div>
+<div class="tasbih-total" id="tasbihTotal">المجموع: 0</div>
+<div style="height:12px"></div>
+<button class="btn ghost" id="tasbihReset">🔄 تصفير العدّاد</button>
+<div style="height:8px"></div>
+<button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
+</div>
+</section>
+
+<!-- الزكاة — مطابقة ZakatActivity.java: 2.5% + سعر الذهب الحي للنصاب -->
+<section class="screen" id="screen-zakat">
+<div class="sec-title">💰 حساب الزكاة</div>
+<div class="card">
+<div class="note" style="margin-top:0">الزكاة ركن من أركان الإسلام: 2.5% من المال الذي بلغ النصاب وحال عليه الحول (سنة هجرية كاملة). النصاب = قيمة 85 غراماً من الذهب.</div>
+<label>مبلغ المال ($)</label>
+<input id="zakatAmount" type="number" step="any" min="0" placeholder="مثال: 10000">
+<label>النصاب ($)</label>
+<input id="zakatNisab" type="number" step="any" min="0" placeholder="قيمة 85 غرام ذهب">
+<button class="btn ghost" id="zakatGoldBtn">💲 جلب سعر الذهب وحساب النصاب</button>
+<div style="height:12px"></div>
+<button class="btn" id="zakatCalcBtn">🧮 احسب الزكاة</button>
+<div style="height:12px"></div>
+<div class="card" style="border:1px solid #E8D0D4;margin-bottom:0"><div class="zakat-result" id="zakatResult"></div></div>
+<div style="height:12px"></div>
+<button class="btn ghost" data-back>‹ رجوع للرئيسية</button>
+</div>
+</section>
+
 </div>
 </div>
 
@@ -303,10 +416,18 @@ function toMin(h){return Math.round((((h%24)+24)%24)*60)}
 /* ===== State ===== */
 const KEYS=["fajr","sunrise","dhuhr","asr","maghrib","isha"];
 const NAMES={fajr:"الفجر",sunrise:"الشروق",dhuhr:"الظهر",asr:"العصر",maghrib:"المغرب",isha:"العشاء"};
-const DEF={name:"Richardson, TX",lat:32.95,lng:-96.73,muezzin:"adhan_makkah.mp3",autoAdhan:true,msq:null};
+const DEF={name:"ريتشاردسون",lat:32.95,lng:-96.73,muezzin:"adhan_makkah.mp3",autoAdhan:true,msq:null};
 let S=Object.assign({},DEF);
 try{const s=JSON.parse(localStorage.getItem("nhq_settings")||"null");if(s)S=Object.assign({},DEF,s);}catch(e){}
 function saveS(){localStorage.setItem("nhq_settings",JSON.stringify(S))}
+/* اسم المدينة من الإحداثيات (Nominatim، بالعربية) — يُحفظ ويُعرض أعلى الصفحة بدل الأرقام */
+function syncLocInputs(){const l=$("locName");if(l)l.value=S.name;const a=$("latInput");if(a)a.value=S.lat;const g=$("lngInput");if(g)g.value=S.lng;}
+function resolveCity(force){
+  const key=S.lat.toFixed(2)+","+S.lng.toFixed(2);
+  try{if(!force&&localStorage.getItem("nhq_city_for")===key&&localStorage.getItem("nhq_city")){if(S.name!==localStorage.getItem("nhq_city")){S.name=localStorage.getItem("nhq_city");}return;}}catch(e){}
+  fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+S.lat+"&lon="+S.lng+"&accept-language=ar")
+  .then(r=>r.json()).then(j=>{const a=j.address||{};const c=a.city||a.town||a.village||a.municipality||a.county||a.state||"";if(c){S.name=c;saveS();try{localStorage.setItem("nhq_city",c);localStorage.setItem("nhq_city_for",key);}catch(e){}render();syncLocInputs();}}).catch(()=>{});
+}
 function effTimes(date){
   const t=prayTimes(date,S.lat,S.lng);
   if(S.msq){for(let i=0;i<6;i++){if(i===1)continue;const k=KEYS[i];if(S.msq.off&&S.msq.off[k])t[i]+=S.msq.off[k]/60;}}
@@ -316,11 +437,11 @@ function timesAsDates(date){
   const t=effTimes(date);
   return t.map(h=>{const d=new Date(date);const mins=Math.round(h*60);d.setHours(0,0,0,0);d.setMinutes(mins);return d;});
 }
-let firedToday="", colonOn=true;
+let firedToday="";
 function render(){
   const now=new Date();
   try{const h=new Intl.DateTimeFormat("ar-SA-u-ca-islamic",{day:"numeric",month:"long",year:"numeric"}).format(now);document.getElementById("hijriDate").textContent=h;}catch(e){document.getElementById("hijriDate").textContent=now.toLocaleDateString("ar");}
-  document.getElementById("gregDate").textContent=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear()+" — "+S.name+" — "+S.lat.toFixed(2)+", "+S.lng.toFixed(2);
+  document.getElementById("gregDate").textContent=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear()+" — "+S.name;
   const t=effTimes(now),dates=timesAsDates(now);
   let nextIdx=-1,nextDate=null;
   for(let i=0;i<6;i++){if(dates[i]>now){nextIdx=i;nextDate=dates[i];break}}
@@ -331,10 +452,8 @@ function render(){
   }
   document.getElementById("timesList").innerHTML=html;
   const diff=nextDate-now,hh=Math.floor(diff/3600000),mm=Math.floor(diff%3600000/60000),ss=Math.floor(diff%60000/1000);
-  colonOn=!colonOn;
-  const sep=colonOn?":":" ";
   document.getElementById("nextName").textContent="الصلاة القادمة: "+NAMES[KEYS[nextIdx]];
-  document.getElementById("countdown").textContent="المتبقي "+hh+sep+String(mm).padStart(2,"0")+sep+String(ss).padStart(2,"0");
+  document.getElementById("countdown").innerHTML='المتبقي <span class="cd">'+hh+':'+String(mm).padStart(2,"0")+':'+String(ss).padStart(2,"0")+'</span>';
   const todayKey=now.toDateString();
   if(firedToday!==todayKey){firedToday=todayKey;window._fired={};}
   for(let i=0;i<6;i++){
@@ -366,8 +485,9 @@ setInterval(render,1000);
 "use strict";
 /* ===== Tabs + screens (مثل MainActivity: 5 تبويبات، والقبلة والراديو شاشتان مستقلتان) ===== */
 const $=id=>document.getElementById(id);
-let currentTab="home";
-function goTab(tab){
+let currentTab="home",currentScreen=null;
+function curView(){return currentScreen?{type:"screen",id:currentScreen}:{type:"tab",id:currentTab};}
+function goTab(tab,push){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   $("bottomNav").classList.remove("hidden");
   document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
@@ -375,21 +495,50 @@ function goTab(tab){
   if(btn)btn.classList.add("on");
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   $("tab-"+tab).classList.add("active");
-  currentTab=tab;
+  currentTab=tab;currentScreen=null;
   if(tab==="quran")loadQuran();
   if(tab==="adhkar")loadAdhkar();
   window.scrollTo(0,0);
+  if(push!==false){try{history.pushState({v:{type:"tab",id:tab}},"");}catch(e){}}
 }
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
-function showScreen(name){
+function showScreen(name,push){
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   $("bottomNav").classList.add("hidden");
   $("screen-"+name).classList.add("active");
+  currentScreen=name;
   if(name==="qibla")updateQibla();
+  if(name==="guide")renderGuide();
+  if(name==="hcal")buildHcal();
+  if(name==="hadith"){hadithViewLevel="books";renderHadithBooks("");}
+  if(name==="tasbih")tasbihInit();
   window.scrollTo(0,0);
+  if(push!==false){try{history.pushState({v:{type:"screen",id:name}},"");}catch(e){}}
 }
-document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>goTab("home"));
+function renderView(v,push){
+  if(v.type==="tab")goTab(v.id,push);
+  else showScreen(v.id,push);
+}
+/* زر الرجوع في الهاتف/المتصفح يرجع للصفحة السابقة داخل التطبيق بدل الخروج منه،
+   ومن الرئيسية يخرج بضغطتين (الأولى تنبيه، الثانية خروج) */
+try{history.replaceState({v:{type:"tab",id:"home"},root:true},"");history.pushState({v:{type:"tab",id:"home"},guard:true},"");}catch(e){}
+let lastBackToast=0;
+window.addEventListener("popstate",e=>{
+  const st=e.state;
+  if(!st)return; /* لا حالة: المتصفح يغادر التطبيق فعلاً */
+  if(st.root){
+    const now=Date.now();
+    if(now-lastBackToast<2000){try{history.back();}catch(err){}return;}
+    lastBackToast=now;
+    showToast("اضغط رجوع مرة أخرى للخروج");
+    try{history.pushState({v:{type:"tab",id:"home"},guard:true},"");}catch(err){}
+    renderView({type:"tab",id:"home"},false);
+    return;
+  }
+  renderView(st.v,false);
+});
+document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>history.back());
 document.querySelectorAll(".cell[data-go]").forEach(c=>c.onclick=()=>goTab(c.dataset.go));
 document.querySelectorAll(".cell[data-screen]").forEach(c=>c.onclick=()=>showScreen(c.dataset.screen));
 let toastTimer=null;
@@ -404,16 +553,22 @@ $("locName").value=S.name;$("latInput").value=S.lat;$("lngInput").value=S.lng;
 $("muezzinSel").value=S.muezzin;$("autoAdhanChk").checked=!!S.autoAdhan;
 if(S.msq&&S.msq.times){for(const k of["fajr","dhuhr","asr","maghrib","isha"]){if(S.msq.times[k])$("msq_"+k).value=S.msq.times[k];}updateMsqStatus();}
 $("saveLocBtn").onclick=()=>{
-  S.name=$("locName").value.trim()||"موقعي";
-  S.lat=parseFloat($("latInput").value)||32.95;S.lng=parseFloat($("lngInput").value)||-96.73;
-  saveS();render();alert("تم حفظ الموقع.");
+  const typed=$("locName").value.trim();
+  const newLat=parseFloat($("latInput").value)||32.95,newLng=parseFloat($("lngInput").value)||-96.73;
+  const coordsChanged=Math.abs(newLat-S.lat)>0.0001||Math.abs(newLng-S.lng)>0.0001;
+  const nameChanged=typed&&typed!==S.name;
+  S.lat=newLat;S.lng=newLng;
+  if(nameChanged){S.name=typed;try{localStorage.setItem("nhq_city",typed);localStorage.setItem("nhq_city_for",S.lat.toFixed(2)+","+S.lng.toFixed(2));}catch(e){}}
+  saveS();render();
+  if(coordsChanged&&!nameChanged)resolveCity(true);
+  alert("تم حفظ الموقع.");
 };
 $("geoBtn").onclick=()=>{
   if(!navigator.geolocation){alert("المتصفح لا يدعم تحديد الموقع.");return;}
   navigator.geolocation.getCurrentPosition(p=>{
-    S.lat=+p.coords.latitude.toFixed(4);S.lng=+p.coords.longitude.toFixed(4);S.name="موقعي الحالي";
-    $("latInput").value=S.lat;$("lngInput").value=S.lng;$("locName").value=S.name;
-    saveS();render();alert("تم تحديد موقعك.");
+    S.lat=+p.coords.latitude.toFixed(4);S.lng=+p.coords.longitude.toFixed(4);
+    saveS();render();syncLocInputs();resolveCity(true);
+    alert("تم تحديد موقعك — وسيظهر اسم مدينتك أعلى الصفحة.");
   },()=>alert("تعذر تحديد الموقع — تأكد من إذن الموقع في إعدادات الآيفون."),{timeout:10000});
 };
 $("muezzinSel").onchange=e=>{S.muezzin=e.target.value;saveS();};
@@ -620,7 +775,180 @@ $("notifBtn").onclick=async()=>{
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("./sw.js").catch(()=>{});
 }
+/* ===== تعلم الصلاة — PrayerGuideActivity: ركعات + وضوء + خطوات + تشهد ===== */
+const GUIDE_RAKAS=[["🌅","الفجر",2],["☀️","الظهر",4],["🌤️","العصر",4],["🌇","المغرب",3],["🌃","العشاء",4]];
+const GUIDE_WUDU=["النية: انوِ الوضوء بقلبك","قل: بسم الله، واغسل كفيك ثلاثاً","تمضمض واستنشق ثلاثاً","اغسل وجهك ثلاثاً من منبت الشعر إلى الذقن","اغسل يديك إلى المرفقين ثلاثاً، وابدأ باليمنى","امسح رأسك مرة واحدة وامسح أذنيك","اغسل رجليك إلى الكعبين ثلاثاً، وابدأ باليمنى","قل بعد الوضوء: أشهد أن لا إله إلا الله وحده لا شريك له وأشهد أن محمداً عبده ورسوله"];
+const GUIDE_STEPS=["استقبل القبلة وانوِ الصلاة بقلبك","ارفع يديك حذو أذنيك وقل: الله أكبر (تكبيرة الإحرام)","ضع يدك اليمنى على اليسرى على صدرك واقرأ دعاء الاستفتاح: سبحانك اللهم وبحمدك وتبارك اسمك وتعالى جدك ولا إله غيرك","اقرأ سورة الفاتحة ثم سورة قصيرة من القرآن","اركع وقل: سبحان ربي العظيم (ثلاثاً)","ارفع من الركوع وقل: سمع الله لمن حمده، ربنا ولك الحمد","اسجد وقل: سبحان ربي الأعلى (ثلاثاً)","اجلس بين السجدتين وقل: رب اغفر لي","اسجد السجدة الثانية كالأولى ثم قف للركعة التالية","في الركعة الثانية بعد السجود اجلس واقرأ التشهد الأول","في الركعة الأخيرة اقرأ التشهد الأخير والصلاة الإبراهيمية","سلّم عن يمينك ثم عن شمالك: السلام عليكم ورحمة الله"];
+function stepHtml(items){return items.map((t,i)=>'<div class="step"><span class="num">'+(i+1)+'</span><span class="tx">'+t+'</span></div>').join("");}
+function renderGuide(){
+  $("guideRakas").innerHTML=GUIDE_RAKAS.map(r=>'<div class="step"><span class="num">'+r[2]+'</span><span class="tx">'+r[0]+' '+r[1]+'</span></div>').join("");
+  $("guideWudu").innerHTML=stepHtml(GUIDE_WUDU);
+  $("guideSteps").innerHTML=stepHtml(GUIDE_STEPS);
+}
+
+/* ===== التقويم الهجري — نفس تقويم Intl الذي يعرضه رأس الصفحة (29 جمادى الأولى 1448 يوم 8/11/2026).
+   التقويم الجدولي من Hijri.java يُستعمل تقديراً أولياً فقط، ثم يُصحَّح بالمشي أياماً حتى يطابق Intl ===== */
+const H_MONTHS=["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الثانية","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+const H_WD=["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+const H_OCC={"1-10":"عاشوراء","3-12":"المولد النبوي","7-27":"الإسراء والمعراج","9-1":"بداية رمضان","9-27":"ليلة القدر","10-1":"عيد الفطر","12-9":"يوم عرفة","12-10":"عيد الأضحى"};
+function jdnGreg(y,m,d){const a=Math.floor((14-m)/12),yy=y+4800-a,mm=m+12*a-3;return d+Math.floor((153*mm+2)/5)+365*yy+Math.floor(yy/4)-Math.floor(yy/100)+Math.floor(yy/400)-32045;}
+function jdnToGreg(jdn){const a=jdn+32044,b=Math.floor((4*a+3)/146097),c=a-Math.floor(146097*b/4),d=Math.floor((4*c+3)/1461),e=c-Math.floor(1461*d/4),m=Math.floor((5*e+2)/153);const day=e-Math.floor((153*m+2)/5)+1,month=m+3-12*Math.floor(m/10),year=100*b+d-4800+Math.floor(m/10);return[year,month,day];}
+function gregToHijri(y,m,d){const jd=jdnGreg(y,m,d);let l=jd-1948440+10632;const n=Math.floor((l-1)/10631);l=l-10631*n+354;const j=Math.floor((10985-l)/5316)*Math.floor(50*l/17719)+Math.floor(l/5670)*Math.floor(43*l/15238);l=l-Math.floor((30-j)/15)*Math.floor(17719*j/50)-Math.floor(j/16)*Math.floor(15238*j/43)+29;const hm=Math.floor(24*l/709),hd=l-Math.floor(709*hm/24),hy=30*n+j-30;return[hy,hm,hd];}
+function hijriToJdn(y,m,d){let est=1948440+(y-1)*354+Math.floor((y-1)*11/30)+(m-1)*29+Math.floor((m-1)/2)+d;for(let i=0;i<60;i++){const g=jdnToGreg(est),h=gregToHijri(g[0],g[1],g[2]);const cmp=(h[0]-y)*372+(h[1]-m)*31+(h[2]-d);if(cmp===0)return est;est+=cmp<0?1:-1;}return est;}
+function hijriParts(date){const p=new Intl.DateTimeFormat("en-u-ca-islamic",{day:"numeric",month:"numeric",year:"numeric"}).formatToParts(date);const g={};p.forEach(x=>g[x.type]=+x.value);return[g.year,g.month,g.day];}
+function hijriDayGreg(y,m,d){
+  const j=hijriToJdn(y,m,d),g0=jdnToGreg(j);
+  const base=new Date(g0[0],g0[1]-1,g0[2]);
+  for(let k=-4;k<=4;k++){
+    const t=new Date(base);t.setDate(base.getDate()+k);
+    const h=hijriParts(t);
+    if(h[0]===y&&h[1]===m&&h[2]===d)return t;
+  }
+  return base;
+}
+function hijriAdj(){try{return parseInt(localStorage.getItem("nhq_hijri_adj")||"0")||0;}catch(e){return 0;}}
+let hcalY=0,hcalM=0;
+function hcalToday(){const h=hijriParts(new Date());let d=h[2]+hijriAdj(),m=h[1],y=h[0];if(d<1){m--;d+=29;if(m<1){m=12;y--;}}if(d>30){d-=30;m++;if(m>12){m=1;y++;}}return[y,m,d];}
+function buildHcal(){
+  if(!hcalY){const t=hcalToday();hcalY=t[0];hcalM=t[1];}
+  $("hcalMonth").textContent=H_MONTHS[hcalM-1]+" "+hcalY+"هـ";
+  $("hcalAdjLabel").textContent="تعديل التاريخ: "+(hijriAdj()>=0?"+":"")+hijriAdj();
+  const first=hijriDayGreg(hcalY,hcalM,1);
+  const ny=hcalM===12?hcalY+1:hcalY,nm=hcalM===12?1:hcalM+1;
+  const nextFirst=hijriDayGreg(ny,nm,1);
+  const days=Math.round((nextFirst-first)/86400000);
+  const firstWd=first.getDay();
+  const offset=(firstWd+1)%7;
+  const t=hcalToday();
+  let html=H_WD.map(w=>'<div class="hcal-wd">'+w+'</div>').join("");
+  const total=offset+days;
+  for(let cell=0;cell<total;cell++){
+    const dayNum=cell-offset+1;
+    if(dayNum<1||dayNum>days){html+='<div class="hcal-empty"></div>';continue;}
+    const g=new Date(first);g.setDate(first.getDate()+dayNum-1);
+    const isToday=dayNum===t[2]&&hcalM===t[1]&&hcalY===t[0],occ=H_OCC[hcalM+"-"+dayNum];
+    html+='<div class="hcal-cell'+(isToday?" today":occ?" occ":"")+'" data-day="'+dayNum+'" data-g="'+g.getDate()+'/'+(g.getMonth()+1)+'/'+g.getFullYear()+'">'+dayNum+(occ?'<span class="oc">'+occ+'</span>':"")+'</div>';
+  }
+  $("hcalGrid").innerHTML=html;
+  $("hcalGrid").querySelectorAll(".hcal-cell").forEach(c=>c.onclick=()=>{
+    showToast(c.dataset.day+" "+H_MONTHS[hcalM-1]+" "+hcalY+"هـ — "+c.dataset.g);
+  });
+  $("hcalToday").textContent="اليوم: "+t[2]+" "+H_MONTHS[t[1]-1]+" "+t[0]+"هـ";
+}
+$("hcalPrev").onclick=()=>{hcalM--;if(hcalM<1){hcalM=12;hcalY--;}buildHcal();};
+$("hcalNext").onclick=()=>{hcalM++;if(hcalM>12){hcalM=1;hcalY++;}buildHcal();};
+$("hcalAdjMinus").onclick=()=>{try{localStorage.setItem("nhq_hijri_adj",String(hijriAdj()-1));}catch(e){}buildHcal();};
+$("hcalAdjPlus").onclick=()=>{try{localStorage.setItem("nhq_hijri_adj",String(hijriAdj()+1));}catch(e){}buildHcal();};
+
+/* ===== الحديث — HadithStore: 14 كتاباً، المواضيع من hadith_index.json، النصوص من CDN ===== */
+const HADITH_BOOKS=[
+["bukhari","صحيح البخاري","أصح كتب الحديث، جمعه الإمام محمد بن إسماعيل البخاري (194-256هـ)"],
+["muslim","صحيح مسلم","جمعه الإمام مسلم بن الحجاج (204-261هـ)"],
+["tirmidhi","جامع الترمذي","المعروف بسنن الترمذي، جمعه الإمام محمد بن عيسى الترمذي (209-279هـ)"],
+["ibnmajah","سنن ابن ماجه","جمعه الإمام محمد بن يزيد ابن ماجه (209-273هـ)"],
+["nasai","سنن النسائي","جمعه الإمام أحمد بن شعيب النسائي (214-303هـ)"],
+["mishkat","مشكاة المصابيح","جمع فيه الخطيب التبريزي متون الأحاديث ورتبها على طريقة الجوامع"],
+["abudawud","سنن أبي داود","جمعه الإمام أبو داود السجستاني (202-275هـ)، وعني بأحاديث الأحكام"],
+["malik","موطأ مالك","جمعه الإمام مالك بن أنس (93-179هـ)"],
+["riyadussalihin","رياض الصالحين","للإمام النووي، مختارات في الآداب والأخلاق والرقائق"],
+["forty","الأربعون النووية","42 حديثاً من جوامع الكلم جمعها الإمام النووي (631-676هـ)"],
+["bulugh","بلوغ المرام","لابن حجر العسقلاني، من أحاديث الأحكام الفقهية"],
+["darimi","سنن الدارمي","جمعه الإمام عبد الله بن عبد الرحمن الدارمي (181-255هـ)"],
+["shamail","الشمائل المحمدية","للترمذي، في صفات النبي ﷺ وأخلاقه وشمائله"],
+["adab","الأدب المفرد","للبخاري، في الآداب والأخلاق الإسلامية"]];
+const HADITH_CDN="https://cdn.jsdelivr.net/gh/CheeseWithSauce/HadithsJSONFormat@main/Sunnah/";
+let hadithIndex=null,hadithViewLevel="books";
+async function loadHadithIndex(){
+  if(hadithIndex)return hadithIndex;
+  const r=await fetch("./hadith_index.json");hadithIndex=await r.json();return hadithIndex;
+}
+function hadithBookName(id){const b=HADITH_BOOKS.find(x=>x[0]===id);return b?b[1]:id;}
+async function renderHadithBooks(q){
+  hadithViewLevel="books";
+  try{
+    const idx=await loadHadithIndex();
+    const list=idx.books.filter(b=>!q||hadithBookName(b.id).includes(q));
+    $("hadithView").innerHTML=list.map(b=>{
+      const total=b.topics.reduce((a,t)=>a+t.count,0);
+      const bb=HADITH_BOOKS.find(x=>x[0]===b.id);
+      return '<button class="list-item" data-book="'+b.id+'">'+hadithBookName(b.id)+'<small>'+(bb?bb[2]:"")+' — '+total+' حديثاً</small></button>';
+    }).join("")||'<div class="note">لا توجد نتائج.</div>';
+    $("hadithView").querySelectorAll("[data-book]").forEach(el=>el.onclick=()=>renderHadithTopics(el.dataset.book));
+  }catch(e){$("hadithView").innerHTML='<div class="note">تعذر تحميل فهرس الحديث — تحقق من الاتصال ثم أعد فتح القسم.</div>';}
+}
+async function renderHadithTopics(bookId){
+  hadithViewLevel="topics";
+  const idx=await loadHadithIndex();
+  const book=idx.books.find(b=>b.id===bookId);
+  $("hadithView").innerHTML='<button class="btn ghost" id="hadithBackBooks">‹ رجوع للكتب</button><div style="height:10px"></div><div class="sec-sub" style="color:#5C1220">'+hadithBookName(bookId)+'</div>'+book.topics.map(t=>'<button class="list-item" data-file="'+t.file+'">'+t.title+'<small>'+t.count+' حديثاً</small></button>').join("");
+  $("hadithBackBooks").onclick=()=>renderHadithBooks($("hadithSearch").value.trim());
+  $("hadithView").querySelectorAll("[data-file]").forEach(el=>el.onclick=()=>renderHadiths(bookId,el.dataset.file));
+}
+async function renderHadiths(bookId,file){
+  hadithViewLevel="list";
+  $("hadithView").innerHTML='<div class="note">جارٍ تحميل الأحاديث...</div>';
+  try{
+    const r=await fetch(HADITH_CDN+bookId+"/"+file);
+    if(!r.ok)throw new Error("http "+r.status);
+    let txt=await r.text();
+    if(txt.charCodeAt(0)===0xFEFF)txt=txt.slice(1);
+    const arr=JSON.parse(txt);
+    $("hadithView").innerHTML='<button class="btn ghost" id="hadithBackTopics">‹ رجوع للمواضيع</button><div style="height:10px"></div>'+arr.map((h,i)=>'<div class="hadith-item"><div class="ar">'+(h.arabic||"")+'</div><div class="ref">'+(i+1)+'. '+(h.reference||"")+'</div>'+(h.grade?'<span class="grade">'+h.grade+'</span>':"")+'</div>').join("");
+    $("hadithBackTopics").onclick=()=>renderHadithTopics(bookId);
+  }catch(e){$("hadithView").innerHTML='<div class="note">تعذر تحميل الأحاديث — تحقق من الاتصال ثم أعد المحاولة.</div><div style="height:10px"></div><button class="btn ghost" id="hadithBackTopics2">‹ رجوع للمواضيع</button>';$("hadithBackTopics2").onclick=()=>renderHadithTopics(bookId);}
+}
+$("hadithSearch").oninput=e=>{if(hadithViewLevel==="books")renderHadithBooks(e.target.value.trim());};
+
+/* ===== المسبحة — TasbihActivity: 15 ذكراً ===== */
+const TASBIH_ADHKAR=["سبحان الله","الحمد لله","الله أكبر","لا إله إلا الله","أستغفر الله","سبحان الله وبحمده","سبحان الله العظيم","لا حول ولا قوة إلا بالله","اللهم صل وسلم على نبينا محمد","أستغفر الله العظيم وأتوب إليه","بسم الله الرحمن الرحيم","يا لطيف","سبحان الله والحمد لله","لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير","حسبي الله ونعم الوكيل"];
+let tasbihDhikr=0,tasbihCount=0,tasbihTotal=0;
+try{tasbihDhikr=parseInt(localStorage.getItem("nhq_tasbih_dhikr")||"0")||0;tasbihTotal=parseInt(localStorage.getItem("nhq_tasbih_total")||"0")||0;tasbihCount=parseInt(localStorage.getItem("nhq_tasbih_c"+tasbihDhikr)||"0")||0;}catch(e){}
+function tasbihRefresh(){
+  $("tasbihCircle").textContent=tasbihCount;
+  $("tasbihSel").value=String(tasbihDhikr);
+  $("tasbihTotal").textContent="المجموع: "+tasbihTotal;
+}
+function tasbihInit(){
+  const sel=$("tasbihSel");
+  if(!sel.options.length){TASBIH_ADHKAR.forEach((a,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=a;sel.appendChild(o);});}
+  tasbihRefresh();
+}
+$("tasbihSel").onchange=e=>{
+  tasbihDhikr=+e.target.value;
+  try{localStorage.setItem("nhq_tasbih_dhikr",String(tasbihDhikr));tasbihCount=parseInt(localStorage.getItem("nhq_tasbih_c"+tasbihDhikr)||"0")||0;}catch(err){}
+  tasbihRefresh();
+};
+$("tasbihCircle").onclick=()=>{
+  tasbihCount++;tasbihTotal++;
+  try{localStorage.setItem("nhq_tasbih_c"+tasbihDhikr,String(tasbihCount));localStorage.setItem("nhq_tasbih_total",String(tasbihTotal));}catch(e){}
+  if(navigator.vibrate)try{navigator.vibrate(20);}catch(e){}
+  tasbihRefresh();
+};
+$("tasbihReset").onclick=()=>{tasbihCount=0;try{localStorage.setItem("nhq_tasbih_c"+tasbihDhikr,"0");}catch(e){}tasbihRefresh();};
+
+/* ===== الزكاة — ZakatActivity: 2.5% + سعر الذهب الحي ===== */
+$("zakatGoldBtn").onclick=async()=>{
+  const b=$("zakatGoldBtn");b.disabled=true;b.textContent="⏳ جارٍ جلب سعر الذهب...";
+  try{
+    const r=await fetch("https://api.gold-api.com/price/XAU");const j=await r.json();
+    const perGram=j.price/31.1035,nisab=perGram*85;
+    $("zakatNisab").value=nisab.toFixed(2);
+    showToast("سعر غرام الذهب: $"+perGram.toFixed(2));
+  }catch(e){showToast("تعذر جلب سعر الذهب — أدخل النصاب يدوياً.");}
+  b.disabled=false;b.textContent="💲 جلب سعر الذهب وحساب النصاب";
+};
+$("zakatCalcBtn").onclick=()=>{
+  const amount=parseFloat($("zakatAmount").value)||0,nisab=parseFloat($("zakatNisab").value)||0;
+  const el=$("zakatResult");
+  if(amount<=0||nisab<=0){el.textContent="⚠️ أدخل المبلغ والنصاب أولاً";return;}
+  if(amount<nisab){el.textContent="ℹ️ لم يبلغ مالك النصاب، فلا زكاة عليك والحمد لله";return;}
+  const z=amount*0.025;
+  el.textContent="✅ الزكاة المستحقة (2.5%): $"+(z===Math.floor(z)?String(Math.floor(z)):z.toFixed(2));
+};
+
 render();updateQibla();
+/* اسم المدينة: إن كان المحفوظ إنجليزياً أو «موقعي الحالي» يُجلب بالعربية من الإحداثيات */
+if(!/[\u0600-\u06FF]/.test(S.name)||S.name==="موقعي الحالي")resolveCity(false);
 </script>
 </body>
 </html>
