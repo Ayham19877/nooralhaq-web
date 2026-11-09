@@ -114,10 +114,10 @@ audio{width:100%;margin-top:10px}
 .hcal-nav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .hcal-nav .mname{flex:1;text-align:center;color:#fff;font-size:21px}
 .hcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.hcal-wd{text-align:center;color:#E8C86A;font-size:13px;padding:4px 0}
-.hcal-cell{background:transparent;border:1px solid #7D5560;border-radius:10px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:18px;padding:4px 0}
+.hcal-wd{text-align:center;color:#5C1220;font-size:13px;padding:4px 0}
+.hcal-cell{background:transparent;border:1px solid #7D5560;border-radius:10px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#5C1220;font-size:18px;padding:4px 0}
 .hcal-cell.today{background:#E8C86A;color:#5C1220;border-color:#E8C86A}
-.hcal-cell.occ{background:#4A0E1A;border-color:#4A0E1A}
+.hcal-cell.occ{background:#4A0E1A;border-color:#4A0E1A;color:#fff}
 .hcal-cell .oc{font-size:10px;color:#E8C86A;line-height:1.2;text-align:center}
 .hcal-cell.today .oc{color:#5C1220}
 .hcal-empty{min-height:56px}
@@ -420,13 +420,16 @@ const DEF={name:"ريتشاردسون",lat:32.95,lng:-96.73,muezzin:"adhan_makka
 let S=Object.assign({},DEF);
 try{const s=JSON.parse(localStorage.getItem("nhq_settings")||"null");if(s)S=Object.assign({},DEF,s);}catch(e){}
 function saveS(){localStorage.setItem("nhq_settings",JSON.stringify(S))}
-/* اسم المدينة من الإحداثيات (Nominatim، بالعربية) — يُحفظ ويُعرض أعلى الصفحة بدل الأرقام */
+/* اسم المدينة من الإحداثيات (Nominatim، بالعربية) — يُحفظ ويُعرض أعلى الصفحة بدل الأرقام.
+   Nominatim يعيد الاسم اللاتيني للمدن الأمريكية لأن OSM بلا اسم عربي لها، فتُترجم بخريطة محلية */
+const AR_CITIES={"Richardson":"ريتشاردسون","Dallas":"دالاس","Plano":"بلانو","Garland":"غارلاند","Fort Worth":"فورت وورث","Austin":"أوستن","Houston":"هيوستن","Arlington":"أرلينغتون","Irving":"إيرفينغ","Mesquite":"ميسكيت","McKinney":"ماكيني","Frisco":"فريسكو","Allen":"ألين","Carrollton":"كارولتون","Lewisville":"لويسفيل","Denton":"دينتون","Wylie":"وايلي","Rowlett":"روليت","Sachse":"ساكسي","Murphy":"ميرفي","Rockwall":"روكوال","Addison":"أديسون","Farmers Branch":"فارمرز برانش","The Colony":"ذا كولوني"};
+function arCity(n){if(!n)return n;const base=n.split(",")[0].trim();return AR_CITIES[base]||n;}
 function syncLocInputs(){const l=$("locName");if(l)l.value=S.name;const a=$("latInput");if(a)a.value=S.lat;const g=$("lngInput");if(g)g.value=S.lng;}
 function resolveCity(force){
   const key=S.lat.toFixed(2)+","+S.lng.toFixed(2);
-  try{if(!force&&localStorage.getItem("nhq_city_for")===key&&localStorage.getItem("nhq_city")){if(S.name!==localStorage.getItem("nhq_city")){S.name=localStorage.getItem("nhq_city");}return;}}catch(e){}
+  try{if(!force&&localStorage.getItem("nhq_city_for")===key&&localStorage.getItem("nhq_city")){const cc=arCity(localStorage.getItem("nhq_city"));if(S.name!==cc){S.name=cc;saveS();}return;}}catch(e){}
   fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+S.lat+"&lon="+S.lng+"&accept-language=ar")
-  .then(r=>r.json()).then(j=>{const a=j.address||{};const c=a.city||a.town||a.village||a.municipality||a.county||a.state||"";if(c){S.name=c;saveS();try{localStorage.setItem("nhq_city",c);localStorage.setItem("nhq_city_for",key);}catch(e){}render();syncLocInputs();}}).catch(()=>{});
+  .then(r=>r.json()).then(j=>{const a=j.address||{};const c0=a.city||a.town||a.village||a.municipality||a.county||a.state||"";const c=arCity(c0);if(c){S.name=c;saveS();try{localStorage.setItem("nhq_city",c);localStorage.setItem("nhq_city_for",key);}catch(e){}render();syncLocInputs();}}).catch(()=>{});
 }
 function effTimes(date){
   const t=prayTimes(date,S.lat,S.lng);
@@ -558,7 +561,7 @@ $("saveLocBtn").onclick=()=>{
   const coordsChanged=Math.abs(newLat-S.lat)>0.0001||Math.abs(newLng-S.lng)>0.0001;
   const nameChanged=typed&&typed!==S.name;
   S.lat=newLat;S.lng=newLng;
-  if(nameChanged){S.name=typed;try{localStorage.setItem("nhq_city",typed);localStorage.setItem("nhq_city_for",S.lat.toFixed(2)+","+S.lng.toFixed(2));}catch(e){}}
+  if(nameChanged){S.name=arCity(typed);try{localStorage.setItem("nhq_city",S.name);localStorage.setItem("nhq_city_for",S.lat.toFixed(2)+","+S.lng.toFixed(2));}catch(e){}}
   saveS();render();
   if(coordsChanged&&!nameChanged)resolveCity(true);
   alert("تم حفظ الموقع.");
@@ -947,7 +950,9 @@ $("zakatCalcBtn").onclick=()=>{
 };
 
 render();updateQibla();
-/* اسم المدينة: إن كان المحفوظ إنجليزياً أو «موقعي الحالي» يُجلب بالعربية من الإحداثيات */
+/* اسم المدينة: يُترجم المحفوظ الإنجليزي المعروف (مثل Richardson) للعربية فوراً،
+   وإن بقي غير عربي أو «موقعي الحالي» يُجلب بالعربية من الإحداثيات */
+const _oldName=S.name;S.name=arCity(S.name);if(S.name!==_oldName)saveS();
 if(!/[\u0600-\u06FF]/.test(S.name)||S.name==="موقعي الحالي")resolveCity(false);
 </script>
 </body>
