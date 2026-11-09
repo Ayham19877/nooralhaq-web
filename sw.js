@@ -1,5 +1,5 @@
 /* Noor Al Haq PWA — service worker v1 */
-const CACHE = "nooralhaq-web-v2";
+const CACHE = "nooralhaq-web-v3";
 const CORE = [
   "./",
   "./index.html",
@@ -10,6 +10,7 @@ const CORE = [
   "./img/dedication_ruqah.webp",
   "./adhkar.json",
   "./quran_uthmani.json",
+  "./hadith_index.json",
   "./img/dua_banner.jpg",
   "./fonts/Tajawal-Regular.ttf",
   "./fonts/Tajawal-Bold.ttf",
